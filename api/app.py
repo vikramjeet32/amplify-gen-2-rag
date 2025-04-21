@@ -27,7 +27,7 @@ def ask_question(input: QueryInput):
     context = "\n".join([chunks_data[i]["text"] for i in I[0]])
 
     # Query local LLM (Mistral)
-    response = client.chat(model='mistral', messages=[
+    response = client.chat(model='gemma:2b', messages=[
         {"role": "system", "content": "You are an assistant that answers based on Amplify Gen 2 documentation."},
         {"role": "user", "content": f"Context: {context}\n\nQuestion: {question}"}
     ])
