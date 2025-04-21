@@ -1,0 +1,30 @@
+Batch DynamoDB Operations
+Batch DynamoDB operations allow you to add multiple items in single mutation.
+After your query or mutation is defined, you need to author your custom business logic using a
+custom resolver powered by AppSync JavaScript resolver
+.
+Custom resolvers work on a "request/response" basis. You choose a data source, map your request to the data source's input parameters, and then map the data source's response back to the query/mutation's return type. Custom resolvers provide the benefit of no cold starts, less infrastructure to manage, and no additional charge for Lambda function invocations. Review
+Choosing between custom resolver and function
+.
+In your
+amplify/data/resource.ts
+file, define a custom handler using
+a.handler.custom
+.
+Amplify will store some values in the resolver context stash that can be accessed in the custom resolver.
+The Amplify generated DynamoDB table names can be constructed from the variables in the context stash. The table name is in the format
+<model-name>-<aws-appsync-api-id>-<amplify-api-environment-name>
+. For example, the table name for the
+Post
+model would be
+Post-123456-dev
+where
+123456
+is the AppSync API ID and
+dev
+is the Amplify API environment name.
+From your generated Data client, you can find all your custom queries and mutations under the
+client.queries.
+and
+client.mutations.
+APIs respectively.

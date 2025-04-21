@@ -1,0 +1,50 @@
+Add custom real-time subscriptions
+Create a custom real-time subscription for any mutation to enable PubSub use cases.
+For every custom subscription, you need to set:
+the mutation(s) that should trigger a subscription event,
+a return type that matches the subscribed mutations' return type,
+authorization rules.
+Optionally, you can set filter arguments to customize the server-side subscription filter rules.
+Use
+a.subscription()
+to define your custom subscription in your
+amplify/data/resource.ts
+file:
+For this example, we're building a generic PubSub capability. This requires us to convert the arguments for
+publish
+into the
+Channel
+'s format. Create a new
+publish.js
+file in your
+amplify/data/
+folder with the following contents:
+Next, create a new
+receive.js
+file in your
+amplify/data/
+folder to define handlers for your subscription. In this case, it'll just be a simple passthrough. In the next section, we'll explore how to use this handler to construct more advanced subscription filters.
+Note:
+We're planning a developer experience enhancement in the near future that'll create this passthrough under the hood.
+From your generated Data client, you can find all your custom subscriptions under
+client.subscriptions
+. Subscribe using the
+.subscribe()
+function and then use the
+next
+function to handle incoming events.
+You can try publishing an event using the custom mutation to test the real-time subscription.
+Your subscription event should be received and logs the payload into your app's developer console. Unsubscribe your subscription to disconnect using the
+unsubscribe()
+function.
+You can add subscription filters by adding arguments to the custom subscriptions.
+If you want to customize the filters, modify the subscription handler. For this example, we'll allow a customer to pass in a
+namePrefix
+parameter that allows the end users to only receive channel events in channels that start with the
+namePrefix
+.
+In your handler, you can set custom subscription filters based on arguments passed into the custom subscription. For this example, create a new
+receive.js
+file alongside the
+amplify/data/resource.ts
+file:

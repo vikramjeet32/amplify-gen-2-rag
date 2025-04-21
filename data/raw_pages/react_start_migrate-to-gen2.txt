@@ -1,0 +1,5 @@
+Gen 2 for Gen 1 customers
+We are actively developing migration tooling to aid in transitioning your project from Gen 1 to Gen 2. Until then, we recommend you continue working with your Gen 1 Amplify project.  We remain committed to supporting both Gen 1 and Gen 2 for the foreseeable future. For new projects, we recommend adopting Gen 2 to take advantage of its
+enhanced capabilities
+. Meanwhile, customers on Gen 1 will continue to receive support for high-priority bugs and essential security updates.
+The tables below present a feature matrix for Gen 1 customers who are considering Gen 2 for their apps. This will help determine the support availability for various features.

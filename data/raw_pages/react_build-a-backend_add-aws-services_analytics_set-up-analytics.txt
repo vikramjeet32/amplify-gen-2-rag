@@ -1,0 +1,22 @@
+Set up Amplify Analytics
+Amplify enables you to collect analytics data for your app. In order to use Analytics, you will enable
+Amazon Kinesis
+or
+Amazon Pinpoint
+using the AWS Cloud Development Kit (AWS CDK). The Analytics category uses
+Amazon Cognito identity pools
+to
+identify
+users in your app. Cognito allows you to receive data from authenticated, and unauthenticated users in your app.
+Use the
+AWS CDK
+to create an analytics resource powered by
+Amazon Pinpoint
+.
+First, install the
+aws-amplify
+library:
+Import and load the configuration file in your app. It's recommended you add the Amplify configuration step to your app's root entry point.
+Next Steps:
+Congratulations! Now that you have Analytics' backend provisioned and Analytics library installed. Check out the following links to see Amplify Analytics use cases:
+Amazon Pinpoint Construct Library

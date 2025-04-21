@@ -1,0 +1,6 @@
+Interpret sentiment
+Note:
+Make sure to complete the
+getting started
+section first, where you will set up the IAM roles with the right policy actions
+Analyze text to find key phrases, sentiment (positive, negative, neutral), or the syntax (pronouns, verbs, etc.). You can also find entities in the text such as names or places, or perform language detection.

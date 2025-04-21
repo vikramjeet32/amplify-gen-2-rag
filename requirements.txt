@@ -1,0 +1,10 @@
+requests
+beautifulsoup4
+readability-lxml
+sentence-transformers
+faiss-cpu
+fastapi
+uvicorn
+jsonlines
+ollama
+streamlit

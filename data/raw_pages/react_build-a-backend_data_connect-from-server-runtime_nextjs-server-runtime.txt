@@ -1,0 +1,64 @@
+Next.js server runtime
+This guide walks through how you can connect to Amplify Data from Next.js Server-side Runtimes (SSR). For Next.js applications, Amplify provides first-class support for the
+App Router (React Server Components, Route Handlers, and Server Actions)
+, the
+Pages Router (Components, API Routes)
+, and
+Middleware
+.
+Before you begin, you will need:
+Connecting to Amplify Data will include choosing the correct data client for Next.js server runtimes, generating the data client, and then calling the API.
+Amplify offers two specialized data clients for Next.js server runtimes (from
+@aws-amplify/adapter-nextjs/data
+) that you should use depending whether you retrieve the user tokens using
+cookies
+or
+NextRequest
+and
+NextResponse
+:
+generateServerClientUsingCookies()
+ðª generates a data client with the Next.js
+cookies
+function from
+next/headers
+. Each API request dynamically refetches the cookies at runtime.
+generateServerClientUsingReqRes()
+ð generates a data client requiring
+NextRequest
+and
+NextResponse
+provided to an
+runWithAmplifyServerContext
+function to prevent token contamination.
+Choose the correct data client based on your Next.js Router (App or Pages) and then the use case:
+generateServerClientUsingCookies() ðª
+generateServerClientUsingReqRes() ð
+To generate a Data client for the Next.js server runtime using cookies, you need to provide both your Amplify configuration and the cookies function from Next.js.
+We recommend you generate Amplify Data's server client in a utility file. Then, import the generated client in your Next.js React Server Components, Server Actions, or Route Handlers.
+To generate a data client for the Next.js server runtime using
+NextRequest
+and
+NextResponse
+, you only need to provide your Amplify configuration. When making the individual API requests, you will need to pass the config to the
+runWithAmplifyServerContext
+function to pass in the cookies from request and response variables.
+We recommend you generate the server Data client in a utility file. Then, import the generated client in your Next.js Middleware, component's server runtime code, and API Routes.
+You can make any available query or mutation request with the generated server data clients; however, note that subscriptions are not available within server runtimes.
+generateServerClientUsingCookies() ðª
+generateServerClientUsingReqRes() ð
+Import the cookie-based server Data client in your Next.js React Server Component code and make your API requests.
+Import the NextRequest/NextResponse-based server Data client in your Next.js server runtime code and make your API requests within the
+runWithAmplifyServerContext
+function. Review
+Server-side Rendering
+to learn more about creating an Amplify server context.
+For example, in a Next.js Pages Router API route, use the
+req
+and
+res
+parameters from the
+handler
+function with
+runWithAmplifyServerContext
+:

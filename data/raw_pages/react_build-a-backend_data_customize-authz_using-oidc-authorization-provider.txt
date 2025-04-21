@@ -1,0 +1,72 @@
+Use OpenID Connect as an authorization provider
+Private, owner, and group authorization can be configured with an OpenID Connect (OIDC) authorization mode. Add
+"oidc"
+to the authorization rule as the provider. Use the
+oidcAuthorizationMode
+property to configure the
+OpenID Connect provider name
+,
+OpenID Connect provider domain
+,
+Client ID
+,
+Issued at TTL
+, and
+Auth Time TTL
+.
+The example below highlights the supported authorization strategies with a
+oidc
+authorization provider. For owner and group-based authorization, you also will need to
+specify a custom identity and group claim
+.
+In your application, you can perform CRUD operations against the model using
+client.models.<model-name>
+by specifying the
+oidc
+auth mode.
+import
+{
+generateClient
+}
+from
+'aws-amplify/data'
+;
+import
+type
+{
+Schema
+}
+from
+'../amplify/data/resource'
+;
+const
+client
+=
+generateClient
+<
+Schema
+>
+(
+)
+;
+const
+{
+errors
+,
+data
+:
+todos
+}
+=
+await
+client
+.
+models
+.
+Todo
+.
+list
+(
+{
+Copy
+highlighted code example

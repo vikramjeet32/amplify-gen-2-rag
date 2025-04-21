@@ -1,0 +1,192 @@
+Multi-step sign-in
+After a user has finished signup, they can proceed to sign in. Amplify Auth signin flows can be multi-step processes. The required steps are determined by the configuration provided when you define your auth resources. See the
+multi-factor authentication
+page for more information.
+Depending on the configuration, you may need to call various APIs to finish authenticating a user's signin attempt. To identify the next step in a signin flow, inspect the
+nextStep
+parameter of the signin result.
+If the next step is
+CONFIRM_SIGN_IN_WITH_SMS_CODE
+, Amplify Auth has sent the user a random code over SMS and is waiting for the user to verify that code. To handle this step, your app's UI must prompt the user to enter the code. After the user enters the code, pass the value to the
+confirmSignIn
+API.
+The result includes an
+AuthCodeDeliveryDetails
+member. It includes additional information about the code delivery, such as the partial phone number of the SMS recipient, which can be used to prompt the user on where to look for the code.
+If the next step is
+CONFIRM_SIGN_IN_WITH_TOTP_CODE
+, you should prompt the user to enter the TOTP code from their associated authenticator app during set up. The code is a six-digit number that changes every 30 seconds. The user must enter the code before the 30-second window expires.
+After the user enters the code, your implementation must pass the value to Amplify Auth
+confirmSignIn
+API.
+If the next step is
+CONFIRM_SIGN_IN_WITH_EMAIL_CODE
+, Amplify Auth has sent the user a random code to their email address and is waiting for the user to verify that code. To handle this step, your app's UI must prompt the user to enter the code. After the user enters the code, pass the value to the
+confirmSignIn
+API.
+The result includes an
+AuthCodeDeliveryDetails
+member. It includes additional information about the code delivery, such as the partial email address of the recipient, which can be used to prompt the user on where to look for the code.
+If the next step is
+CONTINUE_SIGN_IN_WITH_MFA_SELECTION
+, the user must select the MFA method to use. Amplify Auth currently supports SMS, TOTP, and EMAIL as MFA methods. After the user selects an MFA method, your implementation must pass the selected MFA method to Amplify Auth using
+confirmSignIn
+API.
+The MFA types which are currently supported by Amplify Auth are:
+Once Amplify receives the users selection, you can expect to handle a follow up
+nextStep
+corresponding with the selected MFA type for setup:
+If
+SMS
+is selected,
+CONFIRM_SIGN_IN_WITH_SMS_CODE
+will be the next step.
+If
+TOTP
+is selected,
+CONFIRM_SIGN_IN_WITH_TOTP_CODE
+will be the next step.
+If
+EMAIL
+is selected,
+CONFIRM_SIGN_IN_WITH_EMAIL_CODE
+will be the next step.
+If the next step is
+CONTINUE_SIGN_IN_WITH_EMAIL_SETUP
+, then the user must provide an email address to complete the sign in process. Once this value has been collected from the user, call the
+confirmSignIn
+API to continue.
+The
+CONTINUE_SIGN_IN_WITH_TOTP_SETUP
+step signifies that the user must set up TOTP before they can sign in. The step returns an associated value of type TOTPSetupDetails which must be used to configure an authenticator app like Microsoft Authenticator or Google Authenticator. TOTPSetupDetails provides a helper method called getSetupURI which generates a URI that can be used, for example, in a button to open the user's installed authenticator app. For more advanced use cases, TOTPSetupDetails also contains a sharedSecret which can be used to either generate a QR code or be manually entered into an authenticator app.
+Once the authenticator app is set up, the user can generate a TOTP code and provide it to the library to complete the sign in process.
+If the next step is
+CONTINUE_SIGN_IN_WITH_MFA_SETUP_SELECTION
+, then the user must indicate which of the available MFA methods they would like to setup. After the user selects an MFA method to setup, your implementation must pass the selected MFA method to the
+confirmSignIn
+API.
+The MFA types which are currently supported by Amplify Auth for setup are:
+Once Amplify receives the users selection, you can expect to handle a follow up
+nextStep
+corresponding with the selected MFA type for setup:
+If
+EMAIL
+is selected,
+CONTINUE_SIGN_IN_WITH_EMAIL_SETUP
+will be the next step.
+If
+TOTP
+is selected,
+CONTINUE_SIGN_IN_WITH_TOTP_SETUP
+will be the next step.
+If the next step is
+CONFIRM_SIGN_IN_WITH_PASSWORD
+, the user must provide their password as the first factor authentication method. To handle this step, your implementation should prompt the user to enter their password. After the user enters the password, pass the value to the
+confirmSignIn
+API.
+If the next step is
+CONTINUE_SIGN_IN_WITH_FIRST_FACTOR_SELECTION
+, the user must select a first factor method for authentication. After the user selects an option, your implementation should pass the selected method to the
+confirmSignIn
+API.
+The first factor types which are currently supported by Amplify Auth are:
+SMS_OTP
+EMAIL_OTP
+WEB_AUTHN
+PASSWORD
+PASSWORD_SRP
+Depending on your configuration and what factors the user has previously setup, not all options may be available. Only the available options will be presented in
+availableChallenges
+for selection.
+Once Amplify receives the user's selection via the
+confirmSignIn
+API, you can expect to handle a follow up
+nextStep
+corresponding with the first factor type selected:
+If
+SMS_OTP
+is selected,
+CONFIRM_SIGN_IN_WITH_SMS_CODE
+will be the next step.
+If
+EMAIL_OTP
+is selected,
+CONFIRM_SIGN_IN_WITH_EMAIL_CODE
+will be the next step.
+If
+PASSWORD
+or
+PASSWORD_SRP
+is selected,
+CONFIRM_SIGN_IN_WITH_PASSWORD
+will be the next step.
+If
+WEB_AUTHN
+is selected, Amplify Auth will initiate the authentication ceremony on the user's device. If successful, the next step will be
+DONE
+.
+If the next step is
+CONFIRM_SIGN_IN_WITH_CUSTOM_CHALLENGE
+, Amplify Auth is awaiting completion of a custom authentication challenge. The challenge is based on the AWS Lambda trigger you configured as part of a custom sign in flow.
+For example, your custom challenge Lambda may pass a prompt to the frontend which requires the user to enter a secret code.
+To complete this step, you should prompt the user for the custom challenge answer, and pass the answer to the
+confirmSignIn
+API.
+Special Handling on
+confirmSignIn
+If
+failAuthentication=true
+is returned by the Lambda, Cognito will invalidate the session of the request. This is represented by a
+NotAuthorizedException
+and requires restarting the sign-in flow by calling
+signIn
+again.
+If the next step is
+CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED
+, Amplify Auth requires the user choose a new password they proceeding with the sign in.
+Prompt the user for a new password and pass it to the
+confirmSignIn
+API.
+See the
+sign-in
+and
+manage-password
+docs for more information.
+If the next step is
+RESET_PASSWORD
+, Amplify Auth requires that the user reset their password before proceeding.
+Use the
+resetPassword
+API to guide the user through resetting their password, then call
+signIn
+to restart the sign-in flow.
+See the
+reset password
+docs for more information.
+If the next step is
+CONFIRM_SIGN_UP
+, Amplify Auth requires that the user confirm their email or phone number before proceeding.
+Use the
+resendSignUpCode
+API to send a new sign up code to the registered email or phone number, followed by
+confirmSignUp
+to complete the sign up.
+See the
+sign up
+docs for more information.
+The result includes an
+AuthCodeDeliveryDetails
+member. It includes additional information about the code delivery, such as the partial phone number of the SMS recipient, which can be used to prompt the user on where to look for the code.
+Once the sign up is confirmed, call
+signIn
+again to restart the sign-in flow.
+The sign-in flow is complete when the next step is
+DONE
+, which means the user is successfully authenticated.
+As a convenience, the
+SignInResult
+also provides the
+isSignedIn
+property, which will be true if the next step is
+DONE
+.

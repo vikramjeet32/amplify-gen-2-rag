@@ -1,0 +1,19 @@
+AWS Amplify
+Contributor Program
+Get involved with AWS Amplify by making open source contributions to the project.
+Making a Contribution
+How it works
+The Amplify Contributor Program is open to everyone in the Amplify community! In the following steps, we describe what to expect when contributing:
+The Amplify team labels issues using
+good first issue
+for contributors.
+You open a pull request that contains commits you made yourself.
+The Amplify team reviews your pull request.
+If everything looks good, the Amplify team approves the pull request. (At this time, only accepted pull requests count toward earning badges.)
+You collect an
+Amplify badge
+for your first contribution or make progress toward the Intermediate and Advanced badges!
+The Amplify Badge Program
+The Amplify Badge Program celebrates your contributions by offering you exclusive, eye-catching badges to display on your online profiles, such as LinkedIn, GitHub, or your own website.
+Quickstart videos
+Follow along with these videos to learn how to set up your local environment to get started making open source contributions to the Amplify project.

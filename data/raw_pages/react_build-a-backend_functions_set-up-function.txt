@@ -1,0 +1,37 @@
+Set up a Function
+Amplify Functions are powered by
+AWS Lambda
+, and allow you to perform a wide variety of customization through self-contained
+functions
+. Functions can respond to events from other resources, execute some logic in-between events like an authentication flow, or act as standalone jobs. They are used in a variety of settings and use cases:
+Authentication flow customizations (e.g. attribute validations, allowlisting email domains)
+Resolvers for GraphQL APIs
+Handlers for individual REST API routes, or to host an entire API
+Scheduled jobs
+To get started, create a new directory and a resource file,
+amplify/functions/say-hello/resource.ts
+. Then, define the Function with
+defineFunction
+:
+Next, create the corresponding handler file at
+amplify/functions/say-hello/handler.ts
+. This is where your function code will go.
+The handler file
+must
+export a function named "handler". This is the entry point to your function. For more information on writing functions, refer to the
+AWS documentation for Lambda function handlers using Node.js
+.
+Lastly, this function needs to be added to your backend.
+Now when you run
+npx ampx sandbox
+or deploy your app on Amplify, it will include your Function.
+To invoke your Function, we recommend adding your
+Function as a handler for a custom query with your Amplify Data resource
+. This will enable you to strongly type Function arguments and the return statement, and use this to author your Function's business logic. To get started, open your
+amplify/data/resource.ts
+file and specify a new query in your schema:
+Now you can use this query from the
+Schema
+export to strongly type your Function handler:
+Finally, use the data client to invoke your Function by calling its associated query.
+Now that you have completed setting up your first Function, you may also want to add some additional features or modify a few settings. We recommend you learn more about:

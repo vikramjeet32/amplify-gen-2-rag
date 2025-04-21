@@ -1,0 +1,69 @@
+Connect to Amazon OpenSearch for search and aggregate queries
+Amazon OpenSearch Service provides a managed platform for deploying search and analytics solutions with OpenSearch or Elasticsearch. The zero-ETL integration between Amazon DynamoDB and OpenSearch Service allows seamless search on DynamoDB data by automatically replicating and transforming it without requiring custom code or infrastructure. This integration simplifies processes and reduces the operational workload of managing data pipelines.
+DynamoDB users gain access to advanced OpenSearch features like full-text search, fuzzy search, auto-complete, and vector search for machine learning capabilities. Amazon OpenSearch Ingestion synchronizes data between DynamoDB and OpenSearch Service, enabling near-instant updates and comprehensive insights across multiple DynamoDB tables. Developers can adjust index mapping templates to match Amazon DynamoDB fields with OpenSearch Service indexes.
+Amazon OpenSearch Ingestion, combined with S3 exports and DynamoDB streams, facilitates seamless data input from DynamoDB tables and automatic ingestion into OpenSearch. Additionally, the pipeline can back up data to S3 for potential future re-ingestion as needed.
+Begin by setting up your project by following the instructions in the
+Quickstart guide
+. For the purpose of this guide, we'll sync a Todo table from DynamoDB to OpenSearch.
+Firstly, add the Todo model to your schema:
+Important considerations:
+Ensure Point in Time Recovery (PITR) is enabled, which is crucial for the pipeline integration.
+Enable DynamoDB streams to capture item changes that will be ingested into OpenSearch.
+Create an OpenSearch instance with encryption.
+Important considerations:
+We recommend configuring the
+removalPolicy
+to destroy resources for sandbox environments. By default, OpenSearch instances are not deleted when you run
+npx ampx sandbox delete
+, as the default removal policy for stateful resources is set to retain the resource.
+Establish Storage to back up raw events consumed by the OpenSearch pipeline.
+Generate a file named
+amplify/storage/resource.ts
+and insert the provided content to set up a storage resource. Tailor your storage configurations to regulate access to different paths within your storage bucket.
+Get the
+s3BucketArn
+and
+s3BucketName
+values from storage resource as shown below. Additionally, configure an IAM role for the pipeline and assign the roles as indicated below. For further information on the required IAM roles, please refer to the
+Setting up roles and users
+documentation.
+For the S3 bucket, follow standard security practices: block public access, encrypt data at rest, and enable versioning.
+The IAM role should allow the OpenSearch Ingestion Service (OSIS) pipelines to assume it. Grant specific OpenSearch Service permissions and also provide DynamoDB and S3 access. You may customize permissions to follow the principle of least privilege.
+Define the pipeline construct and its configuration.
+When using OpenSearch, you can define the index template or mapping in advance based on your data structure, which allows you to set data types for each field in the document. This approach can be incredibly powerful for precise data ingestion and search. For more information on index mapping/templates, please refer to
+OpenSearch documentation
+.
+Customize the
+template_content
+JSON-representation to define the data structure for the ingestion pipeline.
+The configuration is a data-prepper feature of OpenSearch. For specific documentation on DynamoDB configuration, refer to
+OpenSearch data-prepper documentation
+.
+This configuration defines the desired behavior of the pipeline for a single model.
+In the source configuration, DynamoDB is specified as the data source, along with the target table for ingestion and the starting point of the stream. Additionally, besides ingesting the stream into OpenSearch, a target S3 bucket is defined for backup purposes. Furthermore, an IAM role is set for the ingestion pipeline, ensuring it possesses the necessary permissions and policies as detailed in the documentation.
+Regarding the sink configuration, the OpenSearch domain cluster is specified by setting the host, index name, type, and template content (index mapping) for data formatting. Document-related metadata is configured along with the maximum bulk size for requests to OpenSearch in MB. Once again, an IAM role is specified for the sink portion of the pipeline. For further details on Sink configuration, please refer to the
+OpenSearch documentation
+.
+The sink configuration is an array. To create a different index on the same table, you can achieve this by adding a second OpenSearch configuration to the sink array.
+To index multiple tables, you'll need to configure multiple pipelines in the configuration. For further guidance, please consult the
+pipeline section
+of the OpenSearch documentation.
+Note
+: An OpenSearch Ingestion pipeline supports only one DynamoDB table as its source. For more details on current limitations, Please refer to
+Amazon OpenSearch Limitation
+section.
+Now, create the OSIS pipeline resource:
+After deploying the resources, you can test the data ingestion process by adding an item to the
+Todo
+table. However, before doing that, let's verify that the pipeline has been set up correctly.
+In the AWS console, navigate to OpenSearch and then to the pipelines section. You should find your configured pipeline and review its settings to ensure they match your expectations:
+You can also check this in the DynamoDB console by going to the Integrations section of the tables.
+First, Add the OpenSearch data source to the data backend. Add the following code to the end of the
+amplify/backend.ts
+file.
+Let's create the search resolver. Create a new file named
+amplify/data/searchTodoResolver.js
+and paste the following code. For additional details please refer to
+Amazon OpenSearch Service Resolvers
+Update the schema and add a searchTodo query.
+Once you've deployed the resources, you can verify the changes by checking the AppSync console. Run the 'searchTodo' query and review the results to confirm their accuracy.

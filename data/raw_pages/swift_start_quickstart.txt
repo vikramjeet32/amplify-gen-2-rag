@@ -1,0 +1,132 @@
+Quickstart
+Before you get started, make sure you have the following installed:
+Open Xcode and select
+Create New Project...
+In the next step select the
+App
+template under
+iOS
+. Click on next.
+Next steps are:
+Adding a
+Product Name
+(e.g. MyAmplifyApp)
+Select a
+Team
+(e.g. None)
+Select a
+Organization Identifier
+(e.g. com.example)
+Select
+SwiftUI
+an
+Interface
+.
+Press
+Next
+Now you should have your project created.
+Close accordion
+The easiest way to get started with AWS Amplify is through npm with
+create-amplify
+command. You can run it from your base project directory.
+Running this command will scaffold Amplify backend files in your current project with the following files added:
+To deploy your backend use Amplify's per-developer cloud sandbox. This feature provides a separate backend environment for every developer on a team, ideal for local development and testing. To run your application with a sandbox environment, you can run the following command:
+Once the sandbox environment is deployed, it will create an
+amplify_outputs.json
+. However, Xcode won't be able to recognize them. For recognizing the files, you need to drag and drop the generated files to your project.
+The initial scaffolding already has a pre-configured auth backend defined in the
+amplify/auth/resource
+.ts file. We've configured it to support email and password login but you can extend it to support a variety of login mechanisms, including Google, Amazon, Sign In With Apple, and Facebook.
+The fastest way to get your login experience up and running is to use our Authenticator UI component available in the Amplify UI library.
+To use the Authenticator, open your project in Xcode and select
+File > Add Packages...
+and add the following dependencies:
+Now update the
+MyAmplifyAppApp
+class with the following code:
+Update
+ContentView
+with the following code:
+The Authenticator component auto-detects your auth backend settings and renders the correct UI state based on the auth backend's authentication flow.
+Run your application in your local environment again. You should be presented with a login experience now.
+The initial scaffolding already has a pre-configured data backend defined in the
+amplify/data/resource.ts
+file. The default example will create a Todo model with
+content
+field.
+Let's modify this to add the following:
+A boolean
+isDone
+field.
+An authorization rules specifying owners, authenticated via your Auth resource can "create", "read", "update", and "delete" their own records.
+Update the
+defaultAuthorizationMode
+to sign API requests with the user authentication token.
+Next, let's implement UI to create, list, and delete the to-do items.
+Amplify can automatically generate code for interacting with the backend API. The command below generates model classes from the Data schema:
+Move the generated files to your project. You can do this by dragging and dropping the files to your project.
+Once you are done, add the API dependencies to your project. Select
+File > Add Package Dependencies...
+and add the
+AWSAPIPlugin
+.
+After adding the dependencies, update the
+import
+part of your
+MyAmplifyAppApp.swift
+file with the following code:
+Then, update the
+init()
+part of your
+MyAmplifyAppApp.swift
+file with the following code:
+Create a new file called
+TodoViewModel.swift
+and the
+createTodo
+function with the following code:
+The code above will create a random todo with the current time.
+Next, update the
+listTodos
+function in the
+TodoViewModel.swift
+for listing to-do items:
+This will assign the value of the fetched todos into a Published object.
+Now let's update the UI code to observe the todos. Update the
+VStack
+in the
+ContentView.swift
+file with the following code:
+Throughout the Swift implementation, the async/await pattern has been used and
+for using it easily, we take advantage of the Task structure. For more
+information about the Task structure, you can check the
+documentation
+.
+The code will create a todo and update the todo list each time a todo is created.
+Next step is to update and delete the todos. For that, create
+updateTodo
+and
+deleteTodo
+functions in the
+TodoViewModel.swift
+file with the following code:
+Update the
+List
+in the
+ContentView.swift
+file with code to fetch the todos when the View is displayed and to call
+deleteTodos(indexSet:)
+when the user left-swipe a todo.
+Lastly, create a new file called
+TodoRow.swift
+with the following code:
+This will update the UI to show a toggle to update the todo
+isDone
+and a swipe to delete the todo. Now if you run the application you should see the following flow.
+You can terminate the sandbox environment now to clean up the project.
+Publishing changes to the cloud requires a remote git repository. Amplify offers fullstack branch deployments that allow you to automatically deploy infrastructure and application code changes from feature branches. To learn more, visit the
+fullstack branch deployments guide
+.
+That's it! You have successfully built a fullstack app on AWS Amplify. If you want to learn more about how to work with Amplify, here's the conceptual guide for
+how Amplify works
+.

@@ -1,0 +1,16 @@
+User groups
+Amplify Auth provides a mechanism that allows you to group users. Assigning users to groups enable you to customize access for a collection of users, or leverage for auditing purposes. For example, only "ADMINS" users are permitted to delete posts from a bulletin, or only "EDITORS" are permitted to modify posts in a "draft" state. To get started with groups, configure the
+groups
+property:
+Amplify resources enable you to define access for groups using common language. For example, you can use
+allow.groups
+in data:
+Or in storage:
+By defining access with groups, Amplify configures authorization rules to read from the current user's groups. User pool groups are available as a claim in the user's ID token and access token as
+cognito:groups
+. Requests can be made to secure resources using the access token and validated against this claim to permit action on the resource.
+Each Cognito user pool group is assigned an
+IAM role
+. IAM roles can be modified to extend access to other AWS resources. Roles can be accessed from your backend on the
+role
+property of your group:

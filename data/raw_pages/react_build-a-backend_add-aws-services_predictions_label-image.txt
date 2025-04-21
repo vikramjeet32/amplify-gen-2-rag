@@ -1,0 +1,8 @@
+Label objects in an image
+Note:
+Make sure to complete the
+getting started
+section first, where you will set up the IAM roles with the right policy actions
+Detect labels, such if an image has a desk or a chair in it
+Detect unsafe content in an image
+For both labels and unsafe content

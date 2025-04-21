@@ -1,0 +1,57 @@
+Overriding resources
+By using overrides, you may create a backend that the Amplify libraries or client config is unable to interpret properly. Always test changes in a staging environment.
+When defining resources, you can access some underlying
+AWS Cloud Development Kit (CDK)
+construct properties to modify resource configurations. This allows you to customize backend resources beyond what is offered through the
+define*
+functions.
+Overrides are defined in the
+amplify/backend.ts
+file after the
+defineBackend
+call has been made.
+The
+backend
+object exposes a
+resources
+property with objects for each of the components passed into the
+defineBackend
+function. Each of these resource objects exposes underlying L1 and L2 AWS CDK constructs that you can modify.
+For example, here is how you can access the Cognito user pool that is created by
+defineAuth
+and set a custom removal policy on the resource.
+Most L1 and L2 AWS CDK constructs that are used by the
+define*
+functions are accessible in this way.
+Consider the case that we want to grant a function created by
+defineFunction
+access to call the Cognito user pool created by
+defineAuth
+. For most cases it is recommended to use the
+access
+property on
+defineAuth
+, however for permissions not exposed by this property, access can be accomplished with the following overrides.
+It's possible to reach all the way down to the raw CloudFormation to mutate properties using
+addPropertyOverride
+on an AWS CDK construct. To edit the password policies of the Cognito user pool in
+defineAuth
+, you can use the following code.
+Note the usage of
+auth.resources.cfnResources
+. This property exposes
+L1 CDK constructs
+that map one-to-one with the underlying CloudFormation properties.
+The
+auth.resources.cfnResources.cfnUserPool
+property in the above example directly maps to the
+AWS::Cognito::UserPool CloudFormation resource
+.
+This is different from
+auth.resources.userPool
+in the first example, which is an
+L2 CDK construct
+. These are constructs that provide a convenient interface around several related L1 constructs.
+For situations where you need even more customization of your app backend, see the documentation on
+custom resources
+.

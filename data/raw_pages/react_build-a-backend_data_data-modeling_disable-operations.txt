@@ -1,0 +1,35 @@
+Disable Operations
+The
+disableOperations
+method allows you to selectively disable specific GraphQL operations for a model in your Amplify application. This can be useful for implementing specialized API designs and reduce the number of resources being deployed.
+You can disable operations by adding the
+disableOperations
+method to your model definition:
+The
+disableOperations
+method accepts an array of operation types that you want to disable:
+mutations
+: Disables all mutation operations (create, update, delete)
+subscriptions
+: Disables all real-time subscription operations (onCreate, onUpdate, onDelete)
+queries
+: Disables all query operations (get, list)
+You can also disable more granular operations:
+Query Operations
+get
+: Disables the ability to fetch a single item by ID
+list
+: Disables the ability to fetch multiple items
+create
+: Disables the ability to create new items
+update
+: Disables the ability to update existing items
+delete
+: Disables the ability to delete items
+onCreate
+: Disables real-time notifications when items are created
+onUpdate
+: Disables real-time notifications when items are updated
+onDelete
+: Disables real-time notifications when items are deleted
+You can specify one or more operation types in the array to disable them:

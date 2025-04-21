@@ -1,0 +1,39 @@
+Configure location search
+Amplify's
+geo
+category enables you to search by places, addresses, and coordinates in your app with "place index" resources.
+The pricing plan for Search Index will be set to
+RequestBasedUsage
+.
+We advice you to go through the
+location service pricing
+along with the
+location service terms
+(
+82.5 section
+) to learn more about the pricing plan.
+You can optionally configure the data provider and result storage location for your location search index.
+You can select a data provider as the source for geocoding, reverse geocoding and searches.
+Each provider gathers and curates their data using different means. They may also have varying expertise in different regions of the world.
+The available data providers of geospatial data are shown. To learn more about data providers, please refer this
+location service documentation
+.
+Here â For additional information about HERE Technologies, see
+Here guide
+.
+Esri â For additional information about Esri, see
+Esri guide
+.
+Note:
+If your application is tracking or routing assets you use in your business (such as delivery vehicles or employees), you may only use
+HERE
+as your geolocation provider.
+See section 82 of the
+AWS service terms
+for more details.
+You can specify how the results of a search operation will be stored by the caller.
+SingleUse - specifies that the results won't be stored.
+Storage - specifies that the result can be cached or stored in a database.
+Refer
+this location service doc
+for more information.

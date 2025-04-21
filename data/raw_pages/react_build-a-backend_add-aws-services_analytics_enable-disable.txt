@@ -1,0 +1,7 @@
+Enable and disable analytics
+Analytics are enabled by default when you configure it in your app. To disable Analytics in your app use the
+disable
+function:
+To enable analytics you can use the
+enable
+function in your app:

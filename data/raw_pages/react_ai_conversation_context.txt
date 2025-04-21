@@ -1,0 +1,10 @@
+Context
+For LLMs to provide high-quality answers to users' questions, they need to have the right information. Sometimes this information is contextual, based on the user or the state of the application. To allow for this, you can send
+aiContext
+with any user message to the LLM, which can be any unstructured or structured data that might be useful.
+The function passed to the
+aiContext
+prop will be run immediately before the request is sent in order to get the most up to date information.
+You can use React context or other state management systems to update the data passed to
+aiContext
+. Using React context we can provide more information about the current state of the application:

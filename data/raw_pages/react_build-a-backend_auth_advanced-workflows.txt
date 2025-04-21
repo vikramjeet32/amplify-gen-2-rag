@@ -1,0 +1,65 @@
+Advanced workflows
+You can take specific actions when users sign-in or sign-out by subscribing to authentication events in your app. Please see our
+Hub Module Developer Guide
+for more information.
+You can alternatively create your own custom credentials provider to get AWS credentials directly from Cognito Federated Identities and not use User Pool federation. You must supply the custom credentials provider to Amplify via the
+Amplify.configure
+method call. Below, you can see sample code of how such a custom provider can be built to achieve the use case.
+Now that the custom credentials provider is built and supplied to
+Amplify.configure
+, let's look at how you can use the custom credentials provider to finish federation into Cognito identity pool.
+You can use
+Auth0
+as one of the providers of your Cognito Identity Pool. This will allow users authenticated via Auth0 have access to your AWS resources.
+Step 1.
+Follow Auth0 integration instructions for Cognito Federated Identity Pools
+Step 2. Login with
+Auth0
+, then use the id token returned to get AWS credentials from
+Cognito Federated Identity Pools
+using custom credentials provider you created at the start:
+With the triggers property of defineAuth and defineFunction from the new Functions implementation, you can define
+Lambda Triggers
+for your Cognito User Pool. These enable you to add custom functionality to your registration and authentication flows.
+Check out a preSignUp hook example here.
+If you have a Pre Authentication Lambda trigger enabled, you can pass
+clientMetadata
+as an option for
+signIn
+. This metadata can be used to implement additional validations around authentication.
+Many Cognito Lambda Triggers also accept unsanitized key/value pairs in the form of a
+clientMetadata
+attribute. This attribute can be specified for various Auth APIs which result in Cognito Lambda Trigger execution.
+These APIs include:
+signIn
+signUp
+confirmSignIn
+confirmSignUp
+resetPassword
+confirmResetPassword
+resendSignUpCode
+updateUserAttributes
+Please note that some of triggers which accept a
+validationData
+attribute will use
+clientMetadata
+as the value for
+validationData
+. Exercise caution with using
+clientMetadata
+when you are relying on
+validationData
+.
+You can use AWS
+Service Interface Objects
+to work with AWS Services in authenticated State. You can call methods on any AWS Service interface object by passing your credentials from Amplify
+fetchAuthSession
+to the service call constructor:
+Note: To work with Service Interface Objects, your Amazon Cognito users'
+IAM role
+must have the appropriate permissions to call the requested services.
+Create a custom Auth token provider for situations where you would like provide your own tokens for a service. For example, using OIDC Auth with AppSync.  You must supply the token provider to Amplify via the
+Amplify.configure
+method call. Below, you can see sample code of how such a custom provider can be built to achieve the use case.
+For the complete API documentation for Authentication module, visit our
+API Reference

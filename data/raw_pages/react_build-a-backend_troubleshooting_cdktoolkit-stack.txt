@@ -1,0 +1,44 @@
+Troubleshoot CDKToolkit stack issues
+AWS Amplify requires your AWS account and region to be
+bootstrapped
+in order to deploy resources into your account. Amplify uses the
+AWS Cloud Development Kit (AWS CDK)
+to scaffold backend resource configurations and orchestrate deployments by using the supplemental resources created by the process of bootstrapping.
+Bootstrapping
+is the process of preparing your AWS environment for usage with the AWS Cloud Development Kit (AWS CDK). Before you deploy a CDK stack into an AWS environment, the environment must first be bootstrapped.
+Learn more about bootstrapping by visiting the
+AWS documentation for AWS CDK's concept of bootstrapping
+.
+When deploying an Amplify app you may be redirected to the Amplify Console to complete bootstrapping for your current account ID and region. If this process encounters an error you will be prompted with the following message:
+This typically indicates one or more of the resources within the
+CDKToolkit
+stack has failed to create or update. Navigate to the
+AWS CloudFormation console
+, select your
+CDKToolkit
+stack, and select the "Events" tab to view resource events. Here you may identify issues with the corresponding
+assets bucket
+or issues with the IAM roles used for deployments.
+You can mitigate by manually updating your
+CDKToolkit
+stack using the browser-based
+AWS CloudShell
+:
+Or by running
+bootstrap
+using the AWS CDK CLI from your terminal:
+If you continue to experience this issue after applying the workaround noted above, please file an issue in the
+GitHub repository for Amplify Backend
+.
+If you are deploying an Amplify app for the first time and have previously bootstrapped your AWS account to work with CDK, and you encounter the following error in the Amplify Console:
+You can mitigate by manually updating your
+CDKToolkit
+stack using the browser-based
+AWS CloudShell
+:
+Or by running
+bootstrap
+using the AWS CDK CLI from your terminal:
+If you continue to experience this issue after applying the workaround noted above, please file an issue in the
+GitHub repository for Amplify Backend
+.

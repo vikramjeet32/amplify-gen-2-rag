@@ -1,0 +1,15 @@
+S3 Upload confirmation
+You can use
+defineStorage
+and
+defineFunction
+to create a function trigger to confirm uploading a file.
+To get started, install the
+@types/aws-lambda
+package
+, which contains types for different kinds of Lambda handlers, events, and responses.
+Update your storage definition to define the onUpload trigger as below:
+Next, create a file named
+amplify/storage/on-upload-handler.ts
+and use the following code to log the object keys whenever an object is uploaded to the bucket. You can add your custom logic to this function as needed.
+Now, when you deploy your backend, this function will be invoked whenever an object is uploaded to the bucket.

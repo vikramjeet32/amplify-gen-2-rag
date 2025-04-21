@@ -1,0 +1,19 @@
+Project structure
+Amplify Gen 2 backends are defined using TypeScript, and enable you to collocate resources depending on their function. For example, you can author a
+post confirmation trigger for Amazon Cognito that creates a UserProfile model
+right next to your auth's resource file.
+When you create your first Amplify project using
+npm create amplify@latest
+, it will automatically set up the scaffolding for Data and Authentication resources:
+As your project grows and you build out your backend, the structure of your project may look like the following:
+Backend resources are defined in
+resource
+files using the
+define*
+helpers:
+After the resources are defined, they are set up on the backend:
+You can extend backends by using the
+AWS Cloud Development Kit (AWS CDK)
+, which is installed by default as part of the
+create-amplify
+workflow. With the CDK, you can build using any AWS service, such as an Amazon S3 bucket that authenticated users have read and write access to. To get started with the CDK, add it to your backend:

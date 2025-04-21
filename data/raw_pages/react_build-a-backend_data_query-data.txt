@@ -1,0 +1,108 @@
+Read application data
+You can read application data using the Amplify Data client. In this guide, we will review the difference between reading data and getting data, how to filter query results to get just the data you need, and how to paginate results to make your data more manageable. We will also show you how to cancel these requests when needed.
+Before you begin, you will need:
+Queries are used to read data through the API and include the
+list
+and
+get
+operations. Amplify Data automatically creates
+list
+and
+get
+queries for any
+a.model()
+type in your schema. The
+list
+query retrieves multiple items, such as Todo items, without needing to specific an identifier for a particular record. This is best suited for getting an overview or summary of items, or for enhancing the
+list
+operation to filter the items by specific criteria. When you want to query a single entry by an identifier, you would use
+get
+to retrieve a specific Todo item.
+Note:
+The cost structure of your underlying data source can impact the cost to run some queries. For example, the
+list
+operation uses Amazon DynamoDB "scan operations," which can use more read request units than the
+get
+operation. You will want to review the associated costs for these operations for your data source. In our example, we are using DynamoDB. You can learn more about how DynamoDB costs are calculated by visiting
+Amazon DynamoDB pricing
+.
+You can list items by first generating the Data client with your backend Data schema. Then you can list items of your desired model:
+Troubleshoot unauthorized errors
+Each API request uses an authorization mode. If you get unauthorized errors, you may need to update your authorization mode. To override the default authorization mode defined in your
+amplify/data/resource.ts
+file, pass an
+authMode
+property to the request or the client. The following examples show how you can mutate data with a custom authorization mode:
+Close accordion
+As your data grows, you will need to paginate your list queries. Fortunately, this is already built in to Amplify Data.
+You can combine filters with
+and
+,
+or
+, and
+not
+Boolean logic. Observe that
+filter
+is recursive in respect to those fields. So if, for example, you wanted to filter for
+priority
+values of 1
+or
+2, you would do this:
+Note that querying for
+priority
+of 1 and 2 would return no results, because this is Boolean logic instead of natural language.
+To paginate your list query results, make a subsequent list query request with the
+nextToken
+and
+limit
+input variable set. The
+limit
+variable limits how many results are returned. The response will include a
+nextToken
+you can use to request the next page of data. A
+nextToken
+is a very long string that represents the cursor to the starting item of the next query made with these filters.
+If you're building a React application, you can use the
+usePagination
+hook in Amplify UI to help with managing the pagination user experience.
+A business domain model may contain many models with numerous fields. However, apps typically only need subsets of the data or fields to meet the requirements of different components or screens. It is necessary to have a mechanism to retrieve subsets of models and their relationships. This mechanism would help optimize data usage for screens and components by only transferring needed data. Having this capability would improve the app's data efficiency, latency, and the end user's perceived performance.
+A
+custom selection set
+allows consumers to specify, on a per-call basis, the fields the consumer wants to retrieve; this is possible for all operations that return data (CRUDL +
+observeQuery
+). The desired fields are specified in a strongly typed way (discoverable through IntelliSense) with a "dot notation".
+When using TypeScript, you frequently need to specify data model types for type generics.
+For instance, with React's
+useState
+, you provide a type in TypeScript to ensure type-safety in your component code using the state. Use the
+Schema["MODEL_NAME"]["type"]
+pattern to get TypeScript types for the shapes of data models returned from the backend API.
+You can combine the
+Schema["MODEL_NAME"]["type"]
+type with the
+SelectionSet
+helper type to describe the return type of API requests using the
+selectionSet
+parameter:
+You can cancel any query API request by calling
+.cancel
+on the query request promise that's returned by
+.list(...)
+or
+.get(...)
+.
+You need to ensure that the promise returned from
+.list()
+or
+.get()
+has not been modified. Typically, async functions wrap the promise being returned into another promise. For example, the following will
+not
+work:
+Congratulations! You have finished the
+Read application data
+guide. In this guide, you learned how to read your data through
+get
+and
+list
+queries.
+Our recommended next steps include subscribing to real-time events to look for mutations in your data and continuing to build out and customize your information architecture for your data. Some resources that will help with this work include:

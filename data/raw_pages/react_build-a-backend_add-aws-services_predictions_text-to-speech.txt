@@ -1,0 +1,9 @@
+Text to speech
+Note:
+Make sure to complete the
+getting started
+section first, where you will set up the IAM roles with the right policy actions
+Generate an audio buffer for playback from a text input.
+To view the complete list of voiceId options refer to
+Voices in Amazon Polly
+.

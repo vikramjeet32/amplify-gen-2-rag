@@ -1,0 +1,104 @@
+Connect your app code to API
+In this guide, you will connect your application code to the backend API using the Amplify Libraries. Before you begin, you will need:
+Your cloud sandbox with an Amplify Data resource up and running (
+npx ampx sandbox
+)
+A frontend application set up with the Amplify library installed
+npm installed
+When you deploy you're iterating on your backend (
+npx ampx sandbox
+), an
+amplify_outputs.json
+file is generated for you. This file contains your API's endpoint information and auth configurations. Add the following code to your app's entrypoint to initialize and configure the Amplify client library:
+Once the Amplify library is configured, you can generate a "Data client" for your frontend code to make fully-typed API requests to your backend.
+If you're using Amplify with a JavaScript-only frontend (i.e. not TypeScript), then you can still get a fully-typed data fetching experience by annotating the generated client with a JSDoc comment
+. Select the
+JavaScript
+in the code block below to see how.
+To generate a new Data client, use the following code:
+The
+Authorization Mode
+determines how a request should be authorized with the backend. By default, Amplify Data uses the "userPool" authorization which uses the signed-in user credentials to sign an API request. If you use a
+allow.publicApiKey()
+authorization rules for your data models, you need to use "apiKey" as an authorization mode. Review
+Customize your auth rules
+to learn more about which authorization modes to choose for which type of request. A
+Default Authorization Mode
+is provided as part of the
+amplify_outputs.json
+that is generated upon a successful deployment.
+You can generate different Data clients with different authorization modes or pass in the authorization mode at the request time.
+To apply the same authorization mode on all requests from a Data client, specify the
+authMode
+parameter on the
+generateClient
+function.
+API Key
+Amazon Cognito user pool
+AWS IAM (including Amazon Cognito identity pool roles)
+OpenID Connect (OIDC)
+Lambda Authorizer
+Use "API Key" as your authorization mode when if defined the
+allow.publicApiKey()
+authorization rule.
+Use "userPool" as your authorization mode when using Amazon Cognito user pool-based authorization rules, such as
+allow.authenticated()
+,
+allow.owner()
+,
+allow.ownerDefinedIn()
+,
+allow.groupsDefinedIn()
+, or
+allow.groups()
+.
+Use "identityPool" as your authorization mode when using Amazon Cognito identity pool-based authorization rules, such as
+allow.guest()
+or
+allow.authenticated('identityPool')
+.
+Use "oidc" as your authorization mode when connecting applications to a trusted identity provider. Private, owner, and group authorization can be configured with an OIDC authorization mode. Review the
+OIDC authorization docs
+to learn more.
+Use "Lambda Authorizer" when using your own custom authorization logic via
+allow.custom()
+. Review
+Customize your auth rules
+to learn more about how to implement your authorization protocol.
+You can also specify the authorization mode on each individual API request. This is useful if your application typically only uses one authorization mode with a small number of exceptions.
+API Key
+Amazon Cognito user pool
+AWS IAM (including Amazon Cognito identity pool roles)
+OpenID Connect (OIDC)
+Lambda Authorizer
+You can implement your own custom API authorization logic using a AWS Lambda function. Review
+Customize your auth rules
+to learn more about how to implement your authorization protocol with AWS Lambda.
+When working with the Amplify Data endpoint, you may need to set request headers for authorization purposes or to pass additional metadata from your frontend to the backend API.
+This is done by specifying a
+headers
+parameter into the configuration. You can define headers either on a per Data client-level or on a per-request level:
+The examples above show you how to set static headers but you can also programmatically set headers by specifying an async function for
+headers
+:
+If you have an additional Data endpoint that you're managing with a different Amplify project or through other means, this section will show you how to utilize that endpoint in your frontend code.
+This is done by specifying the
+endpoint
+parameter on the
+generateClient
+function.
+If this Data endpoint shares its authorization configuration (for example, both endpoints share the same user pool and/or identity pool as the one in your
+amplify_outputs.json
+file), you can specify the
+authMode
+parameter on
+generateClient
+.
+If the endpoint uses API Key authorization, you can pass in the
+apiKey
+parameter on
+generateClient
+.
+If the endpoint uses a different authorization configuration, you can manually pass in the authorization header using the instructions in the
+Set custom request headers
+section.

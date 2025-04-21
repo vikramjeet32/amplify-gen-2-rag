@@ -1,0 +1,27 @@
+Enable logging
+You can enable logging to debug your GraphQL API using Amazon CloudWatch logs. To learn more about logging and monitoring capabilities for your GraphQL API, visit the
+AWS AppSync documentation for logging and monitoring
+.
+Default logging can be enabled by setting the
+logging
+property to
+true
+in the call to
+defineData
+. For example:
+Using
+logging: true
+applies the default configuration:
+You can customize individual configuration values by providing a
+DataLogConfig
+object. For example:
+WARNING
+: Setting
+excludeVerboseContent
+to
+false
+logs full queries and user parameters, which can contain sensitive data. We recommend limiting CloudWatch log access to only those roles or users (e.g., DevOps or developers) who genuinely require it, by carefully scoping your IAM policies.
+true
+: Enables default logging.
+DataLogConfig
+object: Overrides one or more default fields.

@@ -1,0 +1,100 @@
+Nuxt.js server runtime
+This guide walks through how you can connect to Amplify Data from Nuxt.js Server-side Runtime (SSR). For Nuxt.js applications, Amplify provides first-class support for
+Routing (Pages)
+,
+API Routes
+, and
+Middleware
+.
+Before you begin, you will need:
+Connecting to Amplify Data will include setting up the AmplifyAPIs Plugin with the
+runWithAmplifyServerContext
+adapter,  using the
+useNuxtApp()
+composable, setting up the Amplify server context utility and then using the
+runAmplifyApi
+function to call the API in an isolated server context.
+Nuxt 3 offers universal rendering by default, where your data fetching logic may be executed on both the client and server sides. Amplify offers APIs that are capable of running within a server context to support use cases such as server-side rendering (SSR) and static site generation (SSG), though Amplify's client-side APIs and server-side APIs of Amplify are slightly different. You can set up an AmplifyAPIs plugin to make your data fetching logic run smoothly across the client and server. To learn more about how to use Amplify categories APIs in server side rendering, refer to this
+documentation
+.
+Create a
+plugins
+directory under the root of your Nuxt project.
+Create two files
+01.amplify-apis.client.ts
+and
+01.amplify-apis.server.ts
+under the
+plugins
+directory.
+In these files, you will register both client-specific and server-specific Amplify APIs that you will use in your Nuxt project as a plugin. You can then access these APIs via the
+useNuxtApp
+composable.
+Modify the
+01.amplify-apis.client.ts
+file, with the following code:
+Expand to view the code implementation
+Make sure you call
+Amplify.configure
+as early as possible in your applicationâs life-cycle. A missing configuration or
+NoCredentials
+error is thrown if
+Amplify.configure
+has not been called before other Amplify JavaScript APIs. Review the
+Library Not Configured Troubleshooting guide
+for possible causes of this issue.
+Close accordion
+Next, modify the
+01.amplify-apis.server.ts
+file, with the following code:
+Expand to view the code implementation
+Close accordion
+Using the GraphQL API in
+~/app.vue
+:
+The
+app.vue
+file can be rendered on both the client and server sides by default. The
+useNuxtApp().$Amplify
+composable will pick up the correct implementation of
+01.amplify-apis.client.ts
+and
+01.amplify-apis.server.ts
+to use, depending on the runtime.
+Only a subset of Amplify APIs are usable on the server side, and as the libraries evolve,
+amplify-apis.client
+and
+amplify-apis.server
+may diverge further. You can guard your API calls to ensure an API is available in the context where you use it. E.g., you can use
+if (process.client)
+to ensure that a client-only API isn't executed on the server.
+Following the specification of Nuxt, your API route handlers will live under
+~/server
+, which is a separate environment from other parts of your Nuxt app; hence, the plugins created in the previous step are not usable here, and extra work is required.
+Setup Amplify Server Context Utility
+Create a
+utils
+directory under the
+server
+directory of your Nuxt project.
+Create an
+amplifyUtils.ts
+file under the
+utils
+directory.
+In this file, you will create a helper function to call Amplify APIs that are capable of running on the server side with context isolation. Modify the
+amplifyUtils.ts
+file, with the following code:
+Expand to view the code implementation
+Close accordion
+Now, you can use the
+runAmplifyApi
+function to call Amplify APIs in an isolated server context. Create a new API route
+/api/current-user
+in the
+server
+directory and modify the
+current-user.ts
+file, with the following code:
+You can then fetch data from this API route, for example:
+fetch('http://localhost:3000/api/current-user')

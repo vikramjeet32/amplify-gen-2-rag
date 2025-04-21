@@ -1,0 +1,61 @@
+Custom data access using Lambda functions
+You can define your own custom authorization rule with a Lambda function.
+In your application, you can perform CRUD operations against the model using
+client.models.<model-name>
+with the
+lambda
+auth mode.
+import
+{
+generateClient
+}
+from
+'aws-amplify/data'
+;
+import
+type
+{
+Schema
+}
+from
+'../amplify/data/resource'
+;
+const
+client
+=
+generateClient
+<
+Schema
+>
+(
+)
+;
+const
+{
+errors
+,
+data
+:
+newTodo
+}
+=
+await
+client
+.
+models
+.
+Todo
+.
+create
+(
+Copy
+highlighted code example
+The Lambda function of choice will receive an authorization token from the client and execute the desired authorization logic. The AppSync GraphQL API will receive a payload from Lambda after invocation to allow or deny the API call accordingly.
+To configure a Lambda function as the authorization mode, create a new file
+amplify/data/custom-authorizer.ts
+. You can use this Lambda function code template as a starting point for your authorization handler code:
+You can use the template above as a starting point for your custom authorization rule. The authorization Lambda function receives the following event:
+Your Lambda authorization function needs to return the following JSON:
+Review the Amplify documentation to set the custom authorization token for the
+Data client
+.

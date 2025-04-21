@@ -1,0 +1,28 @@
+Subscribe and unsubscribe
+In order to start receiving messages from your provider, you need to subscribe to a topic as follows;
+Following events will be triggered with
+subscribe()
+To subscribe for multiple topics, just pass a String array including the topic names:
+To stop receiving messages from a topic, you can use
+unsubscribe()
+method:
+Now that your application is setup and using pubsub subscriptions, you may want to know when the subscription is finally established, or reflect to your users when the subscription isn't healthy. You can monitor the connection state for changes via Hub.
+Connection states
+Connected
+- Connected and working with no issues.
+ConnectedPendingDisconnect
+- The connection has no active subscriptions and is disconnecting.
+ConnectedPendingKeepAlive
+- The connection is open, but has missed expected keep alive messages.
+ConnectedPendingNetwork
+- The connection is open, but the network connection has been disrupted. When the network recovers, the connection will continue serving traffic.
+Connecting
+- Attempting to connect.
+ConnectionDisrupted
+- The connection is disrupted and the network is available.
+ConnectionDisruptedPendingNetwork
+- The connection is disrupted and the network connection is unavailable.
+Disconnected
+- Connection has no active subscriptions and is disconnecting.
+Your application can lose connectivity for any number of reasons such as network outages or when the device is put to sleep. Your subscriptions will automatically reconnect when it becomes possible to do so.
+While offline, your application will miss messages and will not automatically catch up when reconnection happens. Depending on your usecase, you may want take action to catch up when your app comes back online.

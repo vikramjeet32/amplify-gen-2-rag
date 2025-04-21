@@ -1,0 +1,86 @@
+Manage users with Amplify console
+The
+User management
+page in the Amplify console provides a user-friendly interface for managing your application's users. You can create and manage users and groups, edit user attributes, and suspend users.
+If you have not yet created an
+auth
+resource, visit the
+Auth setup guide
+.
+After you've deployed your auth resource, you can access the manager on Amplify Console.
+Log in to the
+Amplify console
+and choose your app.
+Select the branch you would like to access.
+Select
+Authentication
+from the left navigation bar.
+Then, select
+User management
+.
+On the
+User management
+page, select
+Users
+tab.
+Select
+Create user
+.
+In the
+Create user
+window, for Unique identifier enter a email address, username, or phone number. For Temporary password enter a password.
+Choose Create user.
+On the
+User management
+page, choose the
+Groups
+tab and then choose
+Create group
+.
+In the
+Create group
+window, for
+Title
+enter a name for the group.
+Choose
+Create group
+.
+On the
+User management
+page, choose the
+Groups
+tab.
+Select the name of the group to add users to.
+Choose
+Add users
+.
+In the
+Add users to group
+window, choose how you want to search for users to add from the
+Search
+menu. You can choose
+Email
+,
+Phone number
+, or
+Username
+.
+Add one user or multiple users to add to the group and then choose
+Add users
+.
+On the
+User management
+page, choose the
+Groups
+tab.
+In the
+Groups
+section, select the name of the group to delete.
+Choose
+Delete
+.
+A confirmation window is displayed. Enter
+Delete
+and choose,
+Confirm deletion
+.

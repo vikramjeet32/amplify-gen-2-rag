@@ -1,0 +1,66 @@
+Set up AI
+In this guide, you will learn how to get stared with the Amplify AI kit. This includes defining your AI backend with Conversation and Generation routes, and securely connecting to them from your frontend application.
+Before you begin, you will need:
+Node.js
+v18.16.0 or later
+npm
+v6.14.4 or later
+git
+v2.14.1 or later
+You will also need an AWS account that is
+setup for local development
+and has access to the Bedrock Foundation Model(s) you want to use. You can request access to Bedrock models by going in to the
+Bedrock console and requesting access
+.
+Running inference on large language models (LLMs) can be costly. Amazon Bedrock is a serverless service so you only pay for what you use, but be mindful of the costs associated with building generative AI applications.
+See Bedrock pricing for more information
+.
+Run the create amplify script in your project directory:
+Then run the
+Amplify sandbox
+to start your local cloud sandbox:
+This will provision the cloud resources you define in your amplify folder and watch for updates and redeploy them.
+To build an AI backend, you define AI 'routes' in your Amplify Data schema. An AI route is like an API endpoint for interacting with backend AI functionality. There are currently 2 types of routes:
+Conversation:
+A conversation route is a streaming, multi-turn API. Conversations and messages are automatically stored in DynamoDB so users can resume conversations. Examples of this are any chat-based AI experience or conversational UI.
+Generation:
+A single synchronous request-response API. A generation route is just an AppSync Query. Examples of this are: generating alt text for an image, generating structured data from unstructured input, summarization, etc.
+To define AI routes, open your
+amplify/data/resource.ts
+file and use
+a.generation()
+and
+a.conversation()
+in your schema.
+Conversation routes currently ONLY support owner-based authorization and generation routes ONLY support non-owner-based authorization (
+authenticated
+,
+guest
+,
+group
+,
+publicApiKey
+).
+If you have the Amplify sandbox running, when you save this file it will pick up the changes and redeploy the necessary resources for you.
+Once the cloud sandbox is up and running, it will also create an
+amplify_outputs.json
+file, which includes relevant connection information to your AI routes and other Amplify configuration.
+To connect your frontend code to your backend, you need to:
+Configure the Amplify library with the Amplify client configuration file (
+amplify_outputs.json
+).
+Generate a new API client from the Amplify library.
+Make an API request with end-to-end type-safety.
+Install the Amplify client library to your project:
+Call
+Amplify.configure()
+with the
+amplify_outputs.json
+file where the React application is mounted.
+Next, generate a type-safe frontend client to talk to our backend using our backend data schema and the
+generateClient()
+function provided by the Amplify libraries.
+It can be helpful to create a
+client.ts/js
+file that exports the generated Amplify data client as well as the generated React hooks.
+AI conversations are scoped to a user, so your users will need to be logged in with Amplify auth. The easiest way to do this is with the Authenticator component.

@@ -1,0 +1,8 @@
+Build UI
+Amplify offers a
+UI Library
+that makes it easy to build web app user interfaces that are connected to the backend. Amplify UI offers:
+Connected components
+that are designed to work seamlessly with AWS Amplify backend services, allowing you to quickly add common UX patterns for authentication, storage etc. without having to build them from scratch.
+Tooling
+that generates React forms over data, and React components from Figma designs.

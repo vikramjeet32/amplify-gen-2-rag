@@ -1,0 +1,71 @@
+Separate frontend and backend teams
+You might have different frontend and backend teams that maintain their own repositories. With Amplify Gen 2, you can deploy repositories that have backend-only code, so frontend and backend teams can operate independently of each other.
+Run
+mkdir backend-app && cd backend-app && npm create amplify@latest
+to set up a backend-only Amplify project. Commit the code to a Git provider of your choice.
+Connect the
+backend-app
+in the new console. Navigate to the Amplify console and select
+Create new app
+.
+When you connect the repository, notice the only auto-detected framework is Amplify.
+Once you choose
+Save and deploy
+, your backend project will build.
+Now let's set up the frontend app and connect to the deployed backend.
+Install Amplify dependencies.
+To connect to the deployed backend, run the following command. To locate the
+App ID
+for your backend application, navigate to the Amplify console and select your
+backend-app
+. On the Overview page, the
+App ID
+is displayed under the project name.
+This will generate the
+amplify_outputs.json
+file that contains all the information about your backend at the root of your project.
+To validate that your frontend can connect to the backend, add the
+Authenticator
+login form to your app.
+Let's also add an
+amplify.yml
+build-spec to our repository.
+Now let's deploy the app. In the Amplify console, choose
+Create new app
+. Connect the repository with the default settings. You should see that the build generates the output and does not deploy a frontend. Validate that your app is working fine.
+The ideal scenario is that the frontend automatically retrieves the latest updates from the backend every time there is a modification made to the backend code.
+Use the Amplify Console to create an
+incoming webhook
+.
+Navigate to the
+multi-repo-example
+app, under
+Hosting > Build settings
+select
+Create webhook
+. Provide a
+name
+for the webhook and select the
+target branch
+to build on incoming webhook requests.
+Next, select the webhook and copy the
+curl
+command which will be used to trigger a build for the
+multi-repo-example
+app.
+Now update the build settings for the
+backend-app
+to include the
+curl
+command to trigger a frontend build any time there are changes to the backend.
+If you're using Amplify Data, we recommend adding a
+paths
+entry in the
+tsconfig.json
+of your frontend app that points to the
+amplify/data/resource.ts
+file in your backend app to easily access your schema type definitions from your frontend apps.
+First, cone your backend repo into the same parent directory as your frontend app, then add the following entry:
+You can then import the
+Schema
+type from this path in your frontend code to get code completion and strong typing for your API calls:

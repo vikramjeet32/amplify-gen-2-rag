@@ -1,0 +1,3 @@
+Data Extraction
+Data extraction allows you to parse unstructured text and extract structured data using AI. This is useful for converting free-form text into typed objects that can be used in your application.
+The following example shows how to extract product details from an unstructured product description. The AI model will analyze the text and return a structured object containing the product name, summary, price, and category.

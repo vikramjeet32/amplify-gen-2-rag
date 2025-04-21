@@ -1,0 +1,10 @@
+Tagging resources
+Tags are a key-value pair that are applied to AWS resources to hold metadata. Tags are often used to decorate resources with metadata that helps categorize resources for billing or viewing purposes. Learn more about tags by visiting the
+AWS documentation for best practices for tagging resources
+.
+Amplify applies the following tags by default:
+In your Amplify backend you can use the
+Tags
+class from the
+AWS Cloud Development Kit (CDK)
+to apply tags at the root level, which then cascades to child resources.

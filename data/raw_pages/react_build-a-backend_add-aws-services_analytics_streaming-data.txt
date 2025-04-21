@@ -1,0 +1,27 @@
+Streaming analytics data
+The Amazon Kinesis analytics provider allows you to send analytics data to an
+Kinesis
+stream for real-time processing.
+The following is an example utilizing the
+AWS Cloud Development Kit (AWS CDK)
+to create the Analytics resource powered by
+Amazon Kinesis
+.
+If you did not use the CLI, ensure you have
+setup IAM permissions
+for
+kinesis:PutRecords
+.
+Example IAM policy for Amazon Kinesis:
+For more information visit the
+Amazon Kinesis Developer Documentation
+.
+Configure Kinesis:
+You can send a data to a Kinesis stream with the standard
+record()
+method:
+The recorded events are saved in a buffer and sent to the remote server periodically
+(You can tune it with the
+flushInterval
+option)
+. If needed, you have the option to manually clear all the events from the buffer by using the 'flushEvents' API.

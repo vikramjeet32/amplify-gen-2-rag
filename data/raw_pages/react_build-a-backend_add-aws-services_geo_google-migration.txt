@@ -1,0 +1,92 @@
+Migrate from Google Maps
+Are you using Google Maps or another similar Map Provider and would like to switch over to using Amplify Geo or Amazon Location Service? This tutorial will show you how to take your existing Google Maps APIs and switch over to using Amplify Geo.
+Amplify Geo provides APIs for using location based functionality. Under the hood Amplify uses
+Amazon Location Service
+and is designed to work with open source mapping library
+MapLibre
+.
+This guide assumes that you are already familiar with the Google Maps JavaScript API and with front-end web development concepts including HTML, CSS, and JavaScript.
+To complete this tutorial, you will need:
+Amplify Geo
+A text editor
+A key difference to notice between using Amplify Geo and Google Maps is with Google Maps Platform their convention for specifying coordinates is
+[lat, lng]
+. When migrating over to Amplify Geo the order is swapped to be
+[lng, lat]
+. This was done to match the
+geojson spec
+which is also used by MapLibre.
+When using Google Maps Platform or other similar services like Mapbox you will first be prompted to go to the Google Cloud Console to set up APIs and create an API key where you will then use the API key when requesting the Google Maps JS API. With Amplify Geo you will instead setup Amplify Auth and the
+MapView
+component will read the auth configuration from the
+amplify_outputs.json
+file. Behind the scenes Amplify Auth uses Amazon Cognito to set up client credentials with access to Location Service and Geo will use those credentials when making any location related API calls. More information on setting Amplify Auth and Geo can be found below in the
+Setting Up Amplify
+section.
+Open your text editor and create a new file called
+index.html
+.
+Paste the following code into the file to set up the framework for a webpage with a map.
+This code imports the MapLibre GL JS library and CSS, one of the popular options for map rendering we recommend for use with Amplify Geo. In the HTML body you create a
+<div>
+element with an id of 'map' that will be the map's container. Finally in the script section you'll setup some Amplify configuration that is required for Amplify Geo to understand what Amplify AWS resources have been created.
+You will need to setup a
+Geo Map resources
+. Follow instructions for creating a map.
+Once the workflow has completed you should have an
+amplify_outputs.json
+file in the same directory as your
+index.html
+file.
+Save your
+index.html
+file.
+In this step we will show you how to add code to display a map in your application.
+Amplify
+Google Maps
+With Amplify Geo and MapLibre you can add the following code to your index.html file inside the
+<script>
+tags, after the
+Amplify.configure
+command:
+Save your HTML file and open it in a web browser to see your rendered map.
+With the Google Maps JS API you can display a map like so.
+Here you will add a marker to your map
+Amplify
+Google Maps
+With Amplify Geo and MapLibre you can do the following.
+Save your changes and refresh your page and you should see a default blue marker icon on your map.
+Using the Google Maps JS API you would add a marker as show below.
+Now you can add a popup that displays information when a user clicks on a marker.
+Amplify
+Google Maps
+With Amplify Geo and MapLibre you can do the following.
+Save your changes and refresh your page and now when you click on the icon a popup should appear on the screen.
+Using the Google Maps JS API you would add a marker as shown below.
+Now we can try adding a search bar to your map which can return results and place markers on a map based on those results.
+Amplify
+Google Maps
+With Amplify Geo and MapLibre you can do the following.
+Save your changes and refresh your page and now when you should see a maplibre-gl-geocoder control in the top right corner of your map.
+This example uses the
+MapLibre's geocoder component
+to create a search component. To see more options for our
+createAmplifyGeocoder
+utility function check out the docs
+here
+.
+Using the Google Places JS API you would add a search bar as shown below.
+Now we can try adding a search bar without adding it to a map which can return results that you can use.
+Amplify
+Google Maps
+With Amplify Geo and MapLibre you can do the following.
+Save your changes and refresh your page and now when you should see a maplibre-gl-geocoder control in the div you created.
+This example uses the
+MapLibre's geocoder component
+to create a search component. To see more options for our
+createAmplifyGeocoder
+utility function check out the docs
+here
+.
+Using the Google Places JS API you would add a stand alone search bar as shown below.
+Some lines omitted for brevity, see the Google Maps Platform Places Search Box example for the full application

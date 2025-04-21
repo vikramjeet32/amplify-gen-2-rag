@@ -1,0 +1,98 @@
+Download files
+You can easily display images in your app by using the cloud-connected Storage Image React UI component. This component fetches images securely from your storage resource and displays it on the web page.
+Learn more about how you can further customize the UI component by referring to the
+Storage Image documentation
+.
+To further customize your in-app experience, you can use the
+getUrl
+or
+downloadData
+API from the Amplify Library for Storage.
+With the
+getUrl
+API, you can get a presigned URL which is valid for 900 seconds or 15 minutes by default. You can use this URL to create a download link for users to click on. The
+expiresAt
+property is a
+Date
+object that represents the time at which the URL will expire.
+Inside your template or JSX code, you can use the
+url
+property to create a link to the file:
+This function does not check if the file exists by default. As result, the signed URL may fail if the file to be downloaded does not exist.
+The behavior of the
+getUrl
+API can be customized by passing in options.
+Use the
+downloadData
+API to download the file locally.
+You can get the value of file in any of the three formats:
+blob
+,
+json
+, or
+text
+. You can call the respective method on the
+body
+property to consume the set data in the respective format.
+You can also perform an upload operation to a specific bucket by providing the
+bucket
+option. You can pass in a string representing the target bucket's assigned name in Amplify Backend.
+import
+{
+downloadData
+}
+from
+'aws-amplify/storage'
+;
+const
+result
+=
+await
+downloadData
+(
+{
+path
+:
+'album/2024/1.jpg'
+,
+Copy
+highlighted code example
+bucket
+:
+'assignedNameInAmplifyBackend'
+Alternatively, you can also pass in an object by specifying the bucket name and region from the console.
+import
+{
+downloadData
+}
+from
+'aws-amplify/storage'
+;
+const
+result
+=
+await
+downloadData
+(
+{
+path
+:
+'album/2024/1.jpg'
+,
+Copy
+highlighted code example
+bucketName
+:
+'bucket-name-from-console'
+,
+The behavior of the
+downloadData
+API can be customized by passing in options.
+Image compression
+or CloudFront CDN caching for your S3 buckets is not yet possible.
+downloadData
+does not provide a cache control option and it replies on runtime HTTP caching behavior. If you need to bypass the cache, you can use the
+getUrl
+API to create a presigned URL for downloading the file.
+downloadData
+does not support S3 object versioning, it always downloads the latest version.

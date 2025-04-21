@@ -1,0 +1,102 @@
+Sign-in
+Amplify provides a client library that enables you to interact with backend resources such as Amplify Auth.
+The quickest way to get started with Amplify Auth in your frontend application is with the
+Authenticator component
+, which provides a customizable UI and complete authentication flows.
+The
+signIn
+API response will include a
+nextStep
+property, which can be used to determine if further action is required. It may return the following next steps:
+For more information on handling the MFA steps that may be returned, see
+multi-factor authentication
+.
+When you have Email or SMS MFA enabled, Cognito will send messages to your users on your behalf. Email and SMS messages require that your users have email address and phone number attributes respectively. It is recommended to set these attributes as required in your user pool if you wish to use either Email MFA or SMS MFA. When these attributes are required, a user must provide these details before they can complete the sign up process.
+If you have set MFA to be required and you have activated more than one authentication factor, Cognito will prompt new users to select an MFA factor they want to use. Users must have a phone number to select SMS and an email address to select email MFA.
+If a user doesn't have the necessary attributes defined for any available message based MFA, Cognito will prompt them to set up TOTP.
+Visit the
+multi-factor authentication documentation
+to learn more about enabling MFA on your backend auth resource.
+Following sign in, you will receive a
+nextStep
+in the sign-in result of one of the following types. Collect the user response and then pass to the
+confirmSignIn
+API to complete the sign in flow.
+Note:
+The Amplify authentication flow will persist relevant session data throughout the lifespan of a page session. This enables the
+confirmSignIn
+API to be leveraged even after a full page refresh in a multi-page application, such as when redirecting from a login page to a sign in confirmation page.
+To sign in using an external identity provider such as Google, use the
+signInWithRedirect
+function.
+Note:
+if you do not pass an argument to
+signInWithRedirect
+it will redirect your users to the
+Cognito Hosted UI
+, which has limited support for customization.
+Alternatively if you have configured OIDC or SAML-based identity providers in your auth resource, you can specify a "custom" provider in
+signInWithRedirect
+:
+The
+autoSignIn
+API will automatically sign-in a user when it was previously enabled by the
+signUp
+API and after any of the following cases has completed:
+User confirmed their account with a verification code sent to their phone or email (default option).
+User confirmed their account with a verification link sent to their phone or email. In order to enable this option you need to go to the
+Amazon Cognito console
+, look for your userpool, then go to the
+Messaging
+tab and enable
+link
+mode inside the
+Verification message
+option. Finally you need to define the
+signUpVerificationMethod
+to
+link
+inside the
+Cognito
+option of your
+Auth
+config.
+Note
+: When MFA is enabled, your users may be presented with multiple consecutive steps that require them to enter an OTP to proceed with the sign up and subsequent sign in flow. This requirement is not present when using the
+USER_AUTH
+flow.
+Your application's users can also sign in using passwordless methods. To learn more, visit the
+concepts page for passwordless
+.
+Pass
+SMS_OTP
+as the
+preferredChallenge
+when calling the
+signIn
+API in order to initiate a passwordless authentication flow with SMS OTP.
+Pass
+EMAIL_OTP
+as the
+preferredChallenge
+when calling the
+signIn
+API in order to initiate a passwordless authentication flow using email OTP.
+Pass
+WEB_AUTHN
+as the
+preferredChallenge
+in order to initiate the passwordless authentication flow using a WebAuthn credential.
+Pass either
+PASSWORD
+or
+PASSWORD_SRP
+as the
+preferredChallenge
+in order to initiate a traditional password based authentication flow.
+Omit the
+preferredChallenge
+parameter to discover what first factors are available for a given user.
+The
+confirmSignIn
+API can then be used to select a challenge and initiate the associated authentication flow.

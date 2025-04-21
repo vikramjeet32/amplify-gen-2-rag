@@ -1,0 +1,74 @@
+Tools
+Tools allow LLMs to query information to respond with current and relevant information. They are invoked only if the LLM requests to use one based on the user's message and the tool's description.
+There are a few different ways to define LLM tools in the Amplify AI kit.
+Model tools
+Query tools
+Lambda tools
+The easiest way to define tools for your conversation route is with
+a.ai.dataTool()
+for data models and custom queries in your data schema. When you define a tool for a conversation route, Amplify takes care of the heavy lifting:
+Describing the tools to the LLM:
+Each tool definition is an Amplify model query or custom query that is defined in the schema. Amplify knows the input parameters needed for that tool and describes them to the LLM.
+Invoking the tool with the right parameters:
+After the LLM requests to use a tool with necessary input parameters, the conversation handler Lambda function invokes the tool, returns the result to the LLM, and continues the conversation.
+Maintaining the caller identity and authorization:
+Through tools, the LLM can only access data that the application user has access to. When the LLM requests to invoke a tool, we will call it with the user's identity. For example, if the LLM wanted to invoke a query to list Todos, it would only return the todos that user has access to.
+You can give the LLM access to your data models by referencing them in an
+a.ai.dataTool()
+with a reference to a model in your data schema. This requires that the model uses at least one of the following authorization strategies:
+Per user data access
+owner()
+ownerDefinedIn()
+ownersDefinedIn()
+Any signed-in user data access
+Per user group data access
+group()
+groupsDefinedIn()
+groups()
+groupsDefinedIn()
+This will let the LLM list and filter
+Post
+records. Because the data schema has all the information about the shape of a
+Post
+record, the data tool will provide that information to the LLM so you don't have to. Also, the Amplify AI kit handles authorizing the tool use requests based on the caller's identity. This means if you have an owner-based model, the LLM will only be able to query the user's records.
+The only supported model operation is
+'list'
+.
+You can also give the LLM access to custom queries defined in your data schema. To do so, define a custom query with a
+function or custom handler
+and then reference that custom query as a tool. This requires that the custom query uses the
+allow.authenticated()
+authorization strategy.
+The Amplify data tool takes care of specifying the necessary input parameters to the LLM based on the query definition.
+Below is an illustrative example of a Lambda function handler for the
+getWeather
+query.
+Lastly, you will need to update your
+amplify/backend.ts
+file to include the newly defined
+getWeather
+function.
+You can connect to any AWS service by defining a custom query and calling that service in the function handler. To properly authorize the custom query function to call the AWS service, you will need to provide the Lambda with the proper permissions.
+You can also define a tool that executes in the conversation handler AWS Lambda function. This is useful if you want to define a tool that is not related to your data schema or that does simple tasks within the Lambda function runtime.
+First install the
+@aws-amplify/backend-ai
+package.
+Define a custom conversation handler function in your data schema and reference the function in the
+handler
+property of the
+a.conversation()
+definition.
+Define the executable tool(s) and handler. Below is an illustrative example of a custom conversation handler function that defines a
+calculator
+tool.
+Note that we throw an error in the
+calculator
+tool example above if the input is invalid. This error is surfaced to the LLM by the conversation handler function. Depending on the error message, the LLM may try to use the tool again with different input or completing its response with test for the user.
+Lastly, update your backend definition to include the newly defined
+chatHandler
+function.
+Validate and sanitize any input from the LLM before using it in your application, e.g. don't use it directly in a database query or use
+eval()
+to execute it.
+Handle errors gracefully and provide meaningful error messages.
+Log and monitor tool usage to detect potential misuse or issues.

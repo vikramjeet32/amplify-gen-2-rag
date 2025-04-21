@@ -1,0 +1,7 @@
+Integrate your application
+Although Amplify In-App Messaging can be used as a standalone JavaScript library, this guide will show you how to use it together with Amplify UI, which currently supports integration with React and React Native, to get started quickly.
+Amplify UI provides a Higher-Order Component for ease of integrating the In-App Messaging UI with your application. Simply wrap your application root component in, for example,
+App.js
+.
+Below is an example of what your entry file should look like:
+You can now build and run your app in your terminal. If you click on one of the buttons shown in the above example, the in-app message you defined in the Pinpoint console should be displayed in your app.

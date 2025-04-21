@@ -1,0 +1,152 @@
+Work with geofences
+First, make sure you've provisioned a geofence collection resource and configured your app using the instructions in either
+Configure a geofence collection
+or
+Use existing Amazon Location Service resources
+and you have already setup
+displaying a map
+in your application.
+To add a geofence management component to your map, you can use the
+amplify-geofence-control
+.
+Install the necessary dependencies with the following command:
+Note:
+Make sure that
+aws-amplify @aws-amplify/geo
+version
+6.0.0
+or above are installed.
+First, create a map onto which you want to add the geofence management component. See the guide on
+creating and displaying maps
+.
+Then, import
+AmplifyGeofenceControl
+from "maplibre-gl-js-amplify", create a new instance of this control and add it to your MapLibre map instance.
+Notes:
+To use Geofence Controls the user will need to be authenticated with the administrative Cognito user associated with the Geofence Collection you created. Below is an example using React and the
+Amplify Authenticator
+.
+Javascript
+React
+Note:
+When using the existing
+maps implementation
+you can add the Geofence control to an existing map
+Note:
+Ensure that your package bundler (webpack, rollup, etc) is configured to handle css files. Check out the webpack documentation
+here
+.
+If you are using a different mapping library or need a programmatic approach to managing geofences, the
+@aws-amplify/geo
+package provides methods for managing geofences, but not geofence collections.
+First, you need to import Geo from the
+@aws-amplify/geo
+package.
+saveGeofences
+is used to save geofences to your collection. It can take a single geofence or an array of geofences.
+API
+Parameters
+geofences
+- can be a single geofence object, or an array of geofence objects to save to a collection.
+options
+- optional options object for saving geofences
+collectionName
+- the name of the collection to save geofences to.
+Defaults to the default collection listed in your
+amplify_outputs.json
+file after provisioning a geofence collection resource.
+Geofence objects must have the following properties:
+geofenceId
+- a opaque and unique identifier for the geofence.
+geometry
+- a geometry object that defines the geofence.
+polygon
+- an array of arrays with [Longitude, Latitude] coordinates.
+NOTE: Polygon arrays have a few requirements:
+must have at least 4 vertices (i.e. 4 coordinate points)
+the first and last point must be the same in order to complete the polygonal loop
+vertices must be in counter-clockwise order
+Return
+The return from
+saveGeofences
+is a Promise that resolves to
+SaveGeofenceResults
+which contains both successes and errors for geofences that were successfully created or failed.
+Each success object has the following properties:
+geofenceId
+- the geofenceId of the geofence that was saved.
+createTime
+- the time the geofence was created.
+updateTime
+- the time the geofence was last updated.
+Each error object has the following properties:
+geofenceId
+- the geofenceId of the geofence that failed to be saved.
+error
+- an error object
+Example
+geoGeofence
+is used to get a single geofence from a collection.
+API
+Parameters
+geofenceId
+- the
+id
+of the geofence to get.
+options
+- optional options object for getting a geofence
+collectionName
+- the name of the collection to get geofence from.
+Defaults to the default collection listed in your
+amplify_outputs.json
+file after provisioning a geofence collection resource.
+Return
+The return from
+getGeofence
+is a Promise that resolves to a geofence object.
+Example
+listGeofences
+is used to get a list of geofences from a collection. It has pagination built in and will return 100 geofences per page.
+API
+Parameters
+options
+- optional options object for saving geofences
+nextToken
+- the pagination token for the next page of geofences.
+if no token is given, it will return the first page of geofences.
+collectionName
+- the name of the collection to save geofences to.
+Defaults to the default collection listed in your
+amplify_outputs.json
+file after provisioning a geofence collection resource.
+Return
+Returns a Promise that resolves to an object with the following properties:
+entries
+- an array of geofences
+nextToken
+- the pagination token for the next page of geofences
+Example
+deleteGeofences
+is used to delete a geofences from a collection. It can delete a single or multiple geofences at once.
+API
+Parameters
+geofenceIds
+- a single geofenceId or array of geofenceIds to delete
+options
+- optional options object for saving geofences
+collectionName
+- the name of the collection to save geofences to.
+Defaults to the default collection listed in your
+amplify_outputs.json
+file after provisioning a geofence collection resource.
+Return
+The return from
+deleteGeofences
+is a Promise that resolves to an object with both successes and errors for geofences that were successfully deleted or not.
+The success object is an array of geofenceIds that were successfully deleted.
+The error object is an array of error objects that include the following properties:
+geofenceId
+- the geofenceId of the geofence that failed to be deleted.
+error
+- an error object
+Example

@@ -1,0 +1,28 @@
+Storing analytics data
+The Amazon Data Firehose analytics provider allows you to send analytics data to an
+Amazon Data Firehose
+stream for reliably storing data.
+The following is an example utilizing the
+AWS Cloud Development Kit (AWS CDK)
+to create the Analytics resource powered by
+Amazon Data Firehose
+.
+Let's create a storage bucket to store the data from the Firehose stream.
+next, let's create the Firehose resource.
+Ensure you have
+setup IAM permissions
+for
+firehose:PutRecordBatch
+.
+Example IAM policy for Amazon Data Firehose:
+Configure Firehose:
+You can send a data to a Firehose stream with the standard
+record
+method. Any data is acceptable and
+streamName
+is required:
+The recorded events are saved in a buffer and sent to the remote server periodically
+(You can tune it with the
+flushInterval
+option)
+. If needed, you have the option to manually clear all the events from the buffer by using the 'flushEvents' API.

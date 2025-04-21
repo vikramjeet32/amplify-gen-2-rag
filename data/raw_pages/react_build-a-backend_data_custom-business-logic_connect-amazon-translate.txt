@@ -1,0 +1,35 @@
+Connect to Amazon Translate for language translation APIs
+Amazon Translate is a neural machine translation service provided by Amazon Web Services (AWS). It uses advanced deep learning technologies to deliver fast and high-quality language translation. With Amazon Translate, you can easily add multilingual support to your applications and services, enabling users to communicate and interact in their preferred language.
+Key features of Amazon Translate include:
+Accurate and Fluent Translations
+: Amazon Translate produces translations that are both accurate and natural-sounding, providing a seamless experience for users.
+Support for Multiple Languages
+: The service supports a broad range of languages, allowing you to expand your applicationâs reach to diverse audiences around the world.
+Real-Time and Batch Translation
+: Amazon Translate can handle real-time translation for dynamic content and batch translation for larger volumes of text, making it suitable for various use cases.
+Cost-Effective and Scalable
+: With its pay-as-you-go pricing model and automatic scaling, Amazon Translate is an economical and flexible solution for adding translation capabilities to your applications.
+In this section, you will learn how to integrate Amazon Translate into your application using AWS Amplify, enabling you to leverage its powerful translation capabilities effortlessly.
+Set up your project by following the instructions in the
+Quickstart guide
+.
+To install the Amazon Translate SDK, run the following command in your project's root folder:
+To access Amazon Translate service, you need to add Amazon Translate as an HTTP Data Source and configure the proper IAM policy for AWS Lambda to utilize the desired feature effectively. Update
+amplify/backend.ts
+file as shown below.
+Next, create the following
+translate.js
+file in your
+amplify/data
+folder and use the code below to define custom resolvers.
+After adding Amazon Translate as a data source, you can reference it in a custom query using the
+a.handler.custom()
+modifier, which takes the name of the data source and an entry point for your resolvers. In your
+amplify/data/resource.ts
+file, specify
+TranslateDataSource
+as the data source and
+translate.js
+as the entry point, as shown below.
+Import and load the configuration file in your app. It's recommended you add the Amplify configuration step to your app's root entry point.
+Sample frontend code to translate text from one language to another.

@@ -1,0 +1,27 @@
+Use existing Amazon Location resources
+To use existing Amazon Location Services resources with your Amplify backend or frontend application, use the
+addOutput
+method to surface backend resource outputs to the
+amplify_outputs.json
+file:
+To use your existing Amazon Location Service resources (i.e. maps and place indices) with Amplify Geo, you need to ensure your role has the right authorization permissions through Cognito.
+Note:
+Here is a guide on
+Creating an Amazon Cognito identity pool for use with Amazon Location Service
+There are two roles created by Cognito: an "authenticated role" that grants signed-in-user-level access and an "unauthenticated role" that allows unauthenticated access to resources. Attach the following policies for the appropriate resources and roles (Auth and/or Unauth). Replace
+{region}
+,
+{account-id}
+, and
+{enter Map/PlaceIndex name}
+with the correct items. Note that certain actions cannot be performed with unauthenticated access. The list of actions allowed for the Unauth role is in the
+Granting access to Amazon Location Service guide
+.
+You can first import and parse the generated
+amplify_outputs.json
+. You can then manually configure Amplify Geo like this:
+Now you can proceed to
+displaying a map
+or
+adding location search
+to your app.

@@ -1,0 +1,30 @@
+Create a user profile record
+You can use
+defineAuth
+and
+defineFunction
+to create a
+Cognito post confirmation Lambda trigger
+to create a profile record when a user is confirmed.
+A user is "confirmed" when they verify their account. Typically this happens when the user confirms their email via the verification email. The post confirmation handler will
+not
+be triggered for federated sign-ins (i.e. social sign-in).
+To get started, install the
+aws-lambda
+package, which is used to define the handler type.
+Update the
+amplify/data/resource.ts
+file to define a data model for the user's profile:
+Create a new directory and a resource file,
+amplify/auth/post-confirmation/resource.ts
+. Then, define the Function with
+defineFunction
+:
+Then, create the corresponding handler file,
+amplify/auth/post-confirmation/handler.ts
+, file with the following contents:
+When configuring Amplify with
+getAmplifyDataClientConfig
+, your function consumes schema information from an S3 bucket created during backend deployment with grants for the access your function need to use it. Any changes to this bucket outside of backend deployment may break your function.
+Lastly, set the newly created Function resource on your auth resource:
+After deploying the changes, whenever a user signs up and verifies their account a profile record is automatically created.

@@ -1,0 +1,8 @@
+Set up Predictions
+To enable Predictions we need to set up the appropriate IAM policy for Roles in your Cognito Identity Pool in order to use an appropriate feature. Additionally, we need to use the
+addOutput
+method to patch the custom Predictions resource to the expected output configuration.
+To install the Amplify library to use predictions features, run the following commands in your project's root folder:
+Import and load the configuration file in your app. It is recommended you add the Amplify configuration step to your app's root entry point. For example
+main.ts
+in React and Angular.

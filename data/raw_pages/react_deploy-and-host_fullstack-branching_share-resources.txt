@@ -1,0 +1,39 @@
+Share resources across branches
+In some instances, you may not want to deploy new resources for every branch. For example, you might want all your
+feature
+branches to point to the backend resources deployed by the
+dev
+branch so you can reuse seed data, users, and groups.
+You can update your app build settings to share resources across branches. From the Amplify console, go to your
+App overview
+page, select
+Build settings
+under the
+Hosting
+for viewing your app's build specification YAML file.
+Update the build settings for the
+backend
+phase to run
+npx ampx generate outputs --branch dev app-id $AWS_APP_ID
+to generate the
+amplify_outputs.json
+file for all branches other than
+main
+or
+dev
+. After this update, any new deployed branches will not deploy backend resources as part of the build and instead will use the deployed backend resources from the
+dev
+branch.
+Update the build settings for the
+backend
+phase to run
+npx ampx generate outputs --branch dev app-id $AWS_APP_ID
+to generate the
+amplify_outputs.json
+file for all branches other than
+main
+or
+dev
+. After this update, any new deployed branches will not deploy backend resources as part of the build and instead will use the deployed backend resources from the
+dev
+branch.

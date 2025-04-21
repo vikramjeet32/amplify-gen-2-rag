@@ -1,0 +1,22 @@
+Record events
+To record custom events call the
+record
+API:
+Analytics events are buffered in memory and periodically sent to the service and not saved locally between application sessions. If the session is ended before a buffered event is sent, it will be lost. Use the
+flushEvents
+API to manually send buffered events to the service.
+The
+record
+API lets you add additional attributes to an event. For example, to record
+artist
+information with an
+albumVisit
+event:
+Recorded events will be buffered and periodically sent to Amazon Pinpoint.
+Metrics can also be added to an event:
+Metric values must be a
+Number
+type such as a float or integer.
+The Amazon Pinpoint event count updates in minutes after recording your event.
+However, it can take upwards of 30 minutes for the event to display in the Filter section, and for its custom attributes to appear in Amazon Pinpoint.
+The recorded events are saved in a buffer and sent to the remote server periodically. If needed, you have the option to manually clear all the events from the buffer by using the 'flushEvents' API.

@@ -1,0 +1,72 @@
+Fullstack previews
+With fullstack previews, you can set up ephemeral fullstack environments on every pull request. This allows you to test features in isolation from production. Once fullstack previews are enabled, your typical workflow would look like the following diagram:
+Your
+main
+(production branch) and
+featureA
+branch are deployed on Amplify.
+You and your team work on
+featureA
+until it's ready.
+The
+featureA
+branch is updated to
+main
+HEAD and then a pull request to
+main
+is opened.
+The pull request preview is deployed on Amplify and available at
+pr-1.appid.amplifyapp.com
+.
+Once the pull request is merged into
+main
+, the request is closed and the fullstack environment is also automatically torn down.
+Before you get started, make sure you have the following:
+A fullstack Amplify app deployed
+Ensure that your git repository is private. For security purposes, fullstack previews are disabled for public repositories with Amplify backend templates.
+To enable fullstack web previews for your Amplify app, follow these steps:
+Login to the
+Amplify console
+and select your app.
+Navigate to
+Hosting > Previews
+. Select the
+main
+branch and click on
+Edit settings
+.
+Click on the
+Pull request previews
+toggle button and choose
+Confirm
+to enable previews.
+Done! You have successfully enabled previews on the production branch.
+Ship updates to the
+dev
+branch. Now, when you create a pull request for the
+main
+branch, Amplify will build and deploy your fullstack PR and provide you with a preview URL.
+For
+GitHub repositories only
+, you can access your preview URL directly on the pull request from the Amplify Hosting's bot comment:
+After the pull request is merged or closed, the preview URL is deleted and any ephemeral fullstack environment is also deleted.
+Fullstack previews allow teams a way to preview changes from pull requests before merging code to a production branch. Pull requests let you tell others about changes youâve pushed to a branch in a repository and the changes can be reviewed by accessing the preview URL. When previews are enabled on a git branch, by default every pull request created against the git branch creates an ephemeral fullstack environment.
+In some instances, you may not want to deploy new resources for every preview branch. For example, you might want all your preview branches to point to the backend resources deployed by the
+dev
+branch so you can reuse seed data, users, and groups.
+To achieve this, you can update your app build settings to reuse backend resources across your preview branches. In the Amplify console, select your app on the
+All apps
+page. From the
+App overview
+page, select
+Hosting > Build settings
+to view your app's build specification YAML file.
+Update the build settings for the
+backend
+phase to run
+npx ampx generate outputs --branch dev app-id $AWS_APP_ID
+to generate the
+amplify_outputs.json
+file for all preview branches. After this update, any new deployed preview branches will not deploy backend resources as part of the build and instead will use the deployed backend resources from the
+dev
+branch.

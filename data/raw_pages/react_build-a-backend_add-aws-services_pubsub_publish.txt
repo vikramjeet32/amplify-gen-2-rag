@@ -1,0 +1,6 @@
+Publish
+To send a message to a topic, use
+publish()
+method with your topic name and the message:
+If multiple providers are defined in your app you can pass the message to a specific provider:
+You can also publish a message to multiple topics:

@@ -1,0 +1,94 @@
+manageUsers
+Grants CRUD access to users in the UserPool
+cognito-idp:AdminConfirmSignUp
+cognito-idp:AdminCreateUser
+cognito-idp:AdminDeleteUser
+cognito-idp:AdminDeleteUserAttributes
+cognito-idp:AdminDisableUser
+cognito-idp:AdminEnableUser
+cognito-idp:AdminGetUser
+cognito-idp:AdminListGroupsForUser
+cognito-idp:AdminRespondToAuthChallenge
+cognito-idp:AdminSetUserMFAPreference
+cognito-idp:AdminSetUserSettings
+cognito-idp:AdminUpdateUserAttributes
+cognito-idp:AdminUserGlobalSignOut
+manageGroupMembership
+Grants permission to add and remove users from groups
+cognito-idp:AdminAddUserToGroup
+cognito-idp:AdminRemoveUserFromGroup
+manageGroups
+Grants CRUD access to groups in the UserPool
+cognito-idp:GetGroup
+cognito-idp:ListGroups
+cognito-idp:CreateGroup
+cognito-idp:DeleteGroup
+cognito-idp:UpdateGroup
+manageUserDevices
+Manages devices registered to users
+cognito-idp:AdminForgetDevice
+cognito-idp:AdminGetDevice
+cognito-idp:AdminListDevices
+cognito-idp:AdminUpdateDeviceStatus
+managePasswordRecovery
+Grants permission to reset user passwords
+cognito-idp:AdminResetUserPassword
+cognito-idp:AdminSetUserPassword
+addUserToGroup
+Grants permission to add any user to any group.
+cognito-idp:AdminAddUserToGroup
+createUser
+Grants permission to create new users and send welcome messages via email or SMS.
+cognito-idp:AdminCreateUser
+deleteUser
+Grants permission to delete any user
+cognito-idp:AdminDeleteUser
+deleteUserAttributes
+Grants permission to delete attributes from any user
+cognito-idp:AdminDeleteUserAttributes
+disableUser
+Grants permission to deactivate any user
+cognito-idp:AdminDisableUser
+enableUser
+Grants permission to activate any user
+cognito-idp:AdminEnableUser
+forgetDevice
+Grants permission to deregister any user's devices
+cognito-idp:AdminForgetDevice
+getDevice
+Grants permission to get information about any user's devices
+cognito-idp:AdminGetDevice
+getUser
+Grants permission to look up any user by user name
+listUsers
+Grants permission to list users and their basic details in the UserPool
+listDevices
+Grants permission to list any user's remembered devices
+cognito-idp:AdminListDevices
+listGroupsForUser
+Grants permission to list the groups that any user belongs to
+cognito-idp:AdminListGroupsForUser
+listUsersInGroup
+Grants permission to list users in the specified group
+cognito-idp:ListUsersInGroup
+removeUserFromGroup
+Grants permission to remove any user from any group
+cognito-idp:AdminRemoveUserFromGroup
+resetUserPassword
+Grants permission to reset any user's password
+cognito-idp:AdminResetUserPassword
+setUserMfaPreference
+Grants permission to set any user's preferred MFA method
+cognito-idp:AdminSetUserMFAPreference
+setUserPassword
+Grants permission to set any user's password
+cognito-idp:AdminSetUserPassword
+setUserSettings
+Grants permission to set user settings for any user
+cognito-idp:AdminSetUserSettings
+updateDeviceStatus
+Grants permission to update the status of any user's remembered devices
+cognito-idp:AdminUpdateDeviceStatus
+updateUserAttributes
+Grants permission to updates any user's standard or custom attributes
+cognito-idp:AdminUpdateUserAttributes

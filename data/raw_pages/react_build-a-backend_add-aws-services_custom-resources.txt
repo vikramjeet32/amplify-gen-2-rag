@@ -1,0 +1,67 @@
+Custom resources
+Custom resources allow you to integrate any AWS service into an Amplify backend. You are responsible for ensuring that your custom resources are secure, adhere to best practices, and work with the resources that Amplify creates for your app.
+With Amplify Gen 2, you can add custom AWS resources to an Amplify app using the
+AWS Cloud Development Kit (AWS CDK)
+, which is installed by default as part of the
+create-amplify
+workflow. The AWS CDK is an open source software development framework that defines your cloud application resources using familiar programming languages, such as TypeScript.
+The AWS CDK can be used within an Amplify app to add custom resources and configurations beyond what Amplify supports out of the box. For example, a developer could use CDK to hook up a Redis cache, implement custom security rules, deploy containers on AWS Fargate, or use any other AWS service.
+The infrastructure defined through the AWS CDK code is deployed along with the Amplify app backend. This provides the simplicity of Amplify combined with the flexibility of CDK for situations where you need more customization.
+AWS CDK apps are composed of building blocks known as
+constructs
+, which are composed together to form
+stacks
+and
+apps
+. You can learn more in the
+Concepts
+section of the AWS Cloud Development Kit (AWS CDK) v2 Developer Guide.
+With the Amplify code-first DX, you can add existing or custom CDK
+constructs
+to the
+backend
+of your Amplify app.
+The AWS CDK comes with
+many existing constructs
+that can be directly added to your Amplify backend. For example, to add an
+Amazon Simple Queue Service (Amazon SQS)
+queue and an
+Amazon Simple Notification Service (Amazon SNS)
+topic to your backend, you can add the following to your
+amplify/backend.ts
+file.
+Note the use of
+backend.createStack()
+. This method instructs the backend to create a new CloudFormation Stack for your custom resources to live in. You can create multiple custom stacks and you can place multiple resources in any given stack.
+Constructs are the basic building blocks of AWS CDK apps. A construct represents a "cloud component" and encapsulates everything AWS CloudFormation needs to create the component.
+Read more
+.
+As shown above, you can use the existing AWS CDK constructs directly in an Amplify backend. However, you may find yourself repeating some patterns of common constructs. Custom constructs allow you to encapsulate common patterns into reusable components. This helps you implement best practices, accelerate development, and maintain consistency across applications.
+A common use case is creating a custom notification construct that combines a Lambda function with Amazon SNS and Amazon Simple Email Service (Amazon SES).
+This AWS CDK construct implements a decoupled notification system using Amazon SNS and Lambda. It allows publishing notification messages to an SNS topic from one Lambda function, and processing those messages asynchronously using a separate Lambda subscribed to the topic.
+The key components are:
+An Amazon SNS topic to receive notification messages
+A Lambda function to publish messages to the Amazon SNS topic
+A second Lambda subscribed to the topic that processes the messages and sends emails through Amazon SES
+The publisher Lambda allows publishing a message containing the email subject, body text, and recipient address. The emailer Lambda retrieves messages from the SNS topic and handles sending the actual emails.
+The
+CustomNotifications
+custom CDK construct can be defined as follows:
+The Lambda function code for the
+Publisher
+is:
+The Lambda function code for the
+Emailer
+is:
+The
+CustomNotifications
+CDK construct can then be added to the Amplify
+backend
+one or more times, with different properties for each instance.
+The
+Construct Hub
+is a community-driven catalog of reusable infrastructure components. It is a place for developers to discover and share reusable patterns for AWS CDK, maintained by AWS.
+In addition, the
+example projects using the AWS CDK
+repository contains a number of examples of reusable CDK constructs.
+You can use these resources to create custom CDK constructs that can be used in your Amplify app.

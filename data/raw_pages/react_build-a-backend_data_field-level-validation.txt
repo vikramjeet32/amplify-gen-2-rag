@@ -1,0 +1,35 @@
+Field-level validation
+You can enable field-level validation in your model schema by chaining a
+validate
+function to the field.
+For
+string
+fields:
+Note:
+Our schema transformer uses the Java regex engine under the hood. Because of how TypeScript processes string literals, you must quadruple-escape special regex characters in your schema. In a TypeScript string literal, writing
+\\\\s
+produces the string
+\\s
+, which is the correct form for the Java regex engine. If you write
+\\s
+, it produces
+\s
+, which is invalid. Therefore, for the
+matches
+validator, ensure you use quadruple-escaping. For example:
+a.string().validate(v => v.matches("^[a-zA-Z0-9\\\\s]+$", 'Content must contain only letters, numbers, and spaces'))
+For
+integer
+and
+float
+fields:
+Note:
+Currently, we only support validation on
+non-array
+fields of type
+string
+,
+integer
+, and
+float
+.

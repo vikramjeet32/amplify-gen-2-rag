@@ -1,0 +1,226 @@
+Multi-factor authentication
+Amplify Auth supports multi-factor authentication (MFA) for user sign-in flows. MFA is an extra layer of security used to make sure that users trying to gain access to an account are who they say they are. It requires users to provide additional information to verify their identity. Amplify Auth supports MFA with time-based one-time passwords (TOTP), text messages (SMS), and email.
+In this guide we will review how you can set up MFA with each of these methods and the discuss tradeoffs between them to help you choose the right setup for your application. We will also review how to set up MFA to remember a device and reduce sign-in friction for your users.
+Use
+defineAuth
+to enable MFA for your app. The example below is setting up MFA with TOTP but not SMS as you can see that the phone number is not a required attribute.
+If you plan to use SMS for MFA, then the
+phoneNumber
+attribute must be marked as required in your
+userAttributes
+. Note that if you have
+loginWith.phone
+as
+true
+this attribute will automatically be marked as required.
+If you plan to use email for MFA, then the
+email
+attribute must also be
+true
+must be marked as required in your
+userAttributes
+. Note that if you have
+loginWith.email
+as
+true
+this attribute will automatically be marked as required.
+When MFA is
+REQUIRED
+with SMS in your backend auth resource, you will need to pass the phone number during sign-up API call. If you are using the
+email
+or
+username
+as the primary sign-in mechanism, you will need to pass the
+phone_number
+attribute as a user attribute.
+Similarly, when MFA is
+REQUIRED
+with email as your delivery mechanism, you will need to pass an email address during the sign-up API call. If you are using
+phoneNumber
+or
+username
+as the primary sign-in mechanism, you will need to pass the
+email
+attribute as a user attribute.
+This configuration may change depending on the combination of MFA methods enabled in your user pool.
+When enabling MFA you will have two key decisions to make:
+MFA enforcement:
+As part of this setup you will determine how MFA is enforced. If you require MFA by setting MFA mode to
+REQUIRED
+, all your users will need to complete MFA to sign in. If you keep it
+OPTIONAL
+, your users will have the choice whether to enable MFA or not for their account.
+MFA methods:
+You will also specify which MFA method you are using: TOTP (Time-based One-time Password), SMS (text message), email, or any combination thereof. We recommend that you use TOTP-based MFA as it is more secure and you can reserve SMS or email for account recovery.
+Compare TOTP, SMS, and EMAIL MFA methods
+Close accordion
+If multiple MFA methods are enabled for the user, and none are set as preferred, the
+signIn
+API will return
+CONTINUE_SIGN_IN_WITH_MFA_SELECTION
+as the next step in the auth flow. During this scenario, the user should be prompted to select the MFA method they want to use to sign in and their preference should be passed to
+confirmSignIn
+.
+If you are using the
+Authenticator component
+with Amplify, this feature works without any additional code. The guide below is for writing your own implementation.
+Once you have setup SMS as your second layer of authentication with MFA as shown above, your users will get an authentication code via a text message to complete sign-in after they sign in with their username and password.
+You will need to pass
+phone_number
+as a user attribute to enable SMS MFA for your users during sign-up. However, if the primary sign-in mechanism for your Cognito resource is
+phone_number
+(without enabling
+username
+), then you do not need to pass it as an attribute.
+By default, you have to verify a user account after they sign up using the
+confirmSignUp
+API, which will send a one-time password to the user's phone number or email, depending on your Amazon Cognito configuration.
+After a user signs in, if they have MFA enabled for their account, a challenge will be returned that you would need to call the
+confirmSignIn
+API where the user provides their confirmation code sent to their phone number.
+If MFA is
+ON
+or enabled for the user, you must call
+confirmSignIn
+with the OTP sent to their phone.
+After a user has been signed in, call
+updateMFAPreference
+to record the MFA type as enabled for the user and optionally set it as preferred so that subsequent logins default to using this MFA type.
+If you are using the
+Authenticator component
+with Amplify, this feature works without any additional code. The guide below is for writing your own implementation.
+You can use Time-based One-Time Password (TOTP) for multi-factor authentication (MFA) in your web or mobile applications. The Amplify Auth category includes support for TOTP setup and verification using authenticator apps, offering an integrated solution and enhanced security for your users. These apps, such as Google Authenticator, Microsoft Authenticator, have the TOTP algorithm built-in and work by using a shared secret key and the current time to generate short-lived, six digit passwords.
+After you initiate a user sign in with the
+signIn
+API where a user is required to set up TOTP as an MFA method, the API call will return
+CONTINUE_SIGN_IN_WITH_TOTP_SETUP
+as a challenge and next step to handle in your app. You will get that challenge if the following conditions are met:
+MFA is marked as
+Required
+in your user pool.
+TOTP is enabled in your user pool.
+User does not have TOTP MFA set up already.
+The
+CONTINUE_SIGN_IN_WITH_TOTP_SETUP
+step signifies that the user must set up TOTP before they can sign in. The step returns an associated value of type
+TOTPSetupDetails
+which must be used to configure an authenticator app like Microsoft Authenticator or Google Authenticator.
+TOTPSetupDetails
+provides a helper method called
+getSetupURI
+which generates a URI that can be used, for example, in a button to open the user's installed authenticator app. For more advanced use cases,
+TOTPSetupDetails
+also contains a
+sharedSecret
+which can be used to either generate a QR code or be manually entered into an authenticator app.
+Once the authenticator app is set up, the user can generate a TOTP code and provide it to the library to complete the sign in process.
+The TOTP code can be obtained from the user via a text field or any other means. Once the user provides the TOTP code, call
+confirmSignIn
+with the TOTP code as the
+challengeResponse
+parameter.
+After a user has been signed in, call
+updateMFAPreference
+to record the MFA type as enabled for the user and optionally set it as preferred so that subsequent logins default to using this MFA type.
+TOTP MFA can be set up after a user has signed in. This can be done when the following conditions are met:
+MFA is marked as
+Optional
+or
+Required
+in your user pool.
+TOTP is marked as an enabled MFA method in your user pool.
+TOTP can be set up by calling the
+setUpTOTP
+and
+verifyTOTPSetup
+APIs in the
+Auth
+category.
+Invoke the
+setUpTOTP
+API to generate a
+TOTPSetupDetails
+object which should be used to configure an Authenticator app like Microsoft Authenticator or Google Authenticator.
+TOTPSetupDetails
+provides a helper method called
+getSetupURI
+which generates a URI that can be used, for example, in a button to open the user's installed Authenticator app. For more advanced use cases,
+TOTPSetupDetails
+also contains a
+sharedSecret
+which can be used to either generate a QR code or be manually entered into an Authenticator app.
+that contains the
+sharedSecret
+which will be used to either to generate a QR code or can be manually entered into an Authenticator app.
+Once the Authenticator app is set up, the user must generate a TOTP code and provide it to the library. Pass the code to
+verifyTOTPSetup
+to complete the TOTP setup process.
+After TOTP setup is complete, call
+updateMFAPreference
+to record the MFA type as enabled for the user and optionally set it as preferred so that subsequent logins default to using this MFA type.
+If a user loses access to their TOTP device, they will need to contact an administrator to get help accessing their account. Based on the Cognito user pool configuration, the administrator can use the
+AdminSetUserMFAPreference
+to either change the MFA preference to a different MFA method or to disable MFA for the user.
+In a scenario where MFA is marked as "Required" in the Cognito User Pool and another MFA method is not set up, the administrator would need to first initiate an
+AdminUpdateUserAttributes
+call and update the user's phone number attribute. Once this is complete, the administrator can continue changing the MFA preference to SMS as suggested above.
+Once you have setup email as your second layer of authentication with MFA as shown above, your users will get an authentication code via email to complete sign-in after they sign in with their username and password.
+In order to send email authentication codes, the following prerequisites must be met:
+You will need to pass
+email
+as a user attribute to enable email MFA for your users during sign-up. However, if the primary sign-in mechanism for your Cognito resource is already
+email
+(without enabling
+username
+), then you do not need to pass it as an attribute.
+By default, you have to verify a user account after they sign up using the
+confirmSignUp
+API. Following the initial
+signUp
+request, a one-time passcode will be sent to the user's phone number or email, depending on your Amazon Cognito configuration.
+After a user signs in, if they have MFA enabled for their account, a challenge will be issued that requires calling the
+confirmSignIn
+API with the user provided confirmation code sent to their email address.
+If MFA is
+ON
+or enabled for the user, you must call
+confirmSignIn
+with the OTP sent to their email address.
+After a user has been signed in, call
+updateMFAPreference
+to record the MFA type as enabled for the user and optionally set it as preferred so that subsequent logins default to using this MFA type.
+Depending on your user pool configuration, it's possible that multiple MFA options may be available to a given user. In order to avoid requiring your users to select an MFA method each time they sign-in to your application, Amplify provides two utility APIs to manage an individual user's MFA preferences.
+Invoke the following API to get the current MFA preference and enabled MFA types, if any, for the current user.
+Invoke the following API to update the MFA preference for the current user.
+Only one MFA method can be marked as preferred at a time. If the user has multiple MFA methods enabled and tries to mark more than one MFA method as preferred, the API will throw an error.
+Remembering a device is useful in conjunction with MFA because it allows the second factor requirement to be automatically met when your user signs in on that device and reduces friction in their sign-in experience. By default, this feature is turned off.
+Note:
+The
+device tracking and remembering
+features are not available if any of the following conditions are met:
+the federated OAuth flow with Cognito User Pools or Hosted UI is used, or
+when the
+signIn
+API uses the
+USER_PASSWORD_AUTH
+as the
+authFlowType
+.
+You can configure device tracking with
+deviceTracking
+construct.
+Understand key terms used for tracking devices
+There are differences to keep in mind when working with remembered, forgotten, and tracked devices.
+Tracked:
+Every time the user signs in with a new device, the client is given the device key at the end of a successful authentication event. We use this device key to generate a salt and password verifier which is used to call the
+ConfirmDevice
+API. At this point, the device is considered to be "tracked". Once the device is in a tracked state, you can use the Amazon Cognito console to see the time it started to be tracked, last authentication time, and other information about that device.
+Remembered:
+Remembered devices are also tracked. During user authentication, the device key and secret pair assigned to a remembered device is used to authenticate the device to verify that it is the same device that the user previously used to sign in.
+Not Remembered:
+A not-remembered device is a tracked device where Cognito has been configured to require users to "Opt-in" to remember a device but the user has chosen not to remember the device. This use case is for users signing into their application from a device that they don't own.
+Forgotten:
+In the event that you no longer want to remember or track devices, you can use the
+forgetDevice()
+API to remove devices from being both remembered and tracked.
+Close accordion

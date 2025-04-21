@@ -1,0 +1,65 @@
+Quickstart
+Before you get started, make sure you have the following installed:
+This Quickstart guide will walk you through how to build a Todo application for Android or iOS using
+Expo
+'s TypeScript template.
+Warning:
+React Native for Web is not officially supported yet, but we are working towards official support. We are tracking the progress in
+issue #13918 on GitHub
+For calling native libraries and platform dependencies, you need to have run the prebuild command for generating the folders for depending platforms.
+The easiest way to get started with AWS Amplify is through npm with
+create-amplify
+command. You can run it from your base project directory.
+Running this command will scaffold Amplify backend files in your current project with the following files added:
+To deploy your backend use Amplify's per-developer cloud sandbox. This feature provides a separate backend environment for every developer on a team, ideal for local development and testing. To run your application with a sandbox environment, you can run the following command:
+The initial scaffolding already has a pre-configured auth backend defined in the
+amplify/auth/resource
+.ts file. We've configured it to support email and password login but you can extend it to support a variety of login mechanisms, including Google, Amazon, Sign In With Apple, and Facebook.
+The fastest way to get your login experience up and running is to use our Authenticator UI component available in the Amplify UI library.
+To use the Authenticator, you need to add the following dependencies to your project:
+Then install the iOS cocoapods for targeting iOS by running:
+Next, update the
+App.tsx
+file with the following:
+The Authenticator component auto-detects your auth backend settings and renders the correct UI state based on the auth backend's authentication flow.
+Run your application in your local environment again. You should be presented with a login experience now.
+The initial scaffolding already has a pre-configured data backend defined in the
+amplify/data/resource.ts
+file. The default example will create a Todo model with
+content
+field.
+Let's modify this to add the following:
+A boolean
+isDone
+field.
+An authorization rules specifying owners, authenticated via your Auth resource can "create", "read", "update", and "delete" their own records.
+Update the
+defaultAuthorizationMode
+to sign API requests with the user authentication token.
+Next, let's implement UI to create, list, and delete the to-do items. Create a
+src
+folder, and within the folder, create a new file called
+TodoList.tsx
+. This page will contain information about creating, reading, updating, and deleting Todo items.
+Copy and paste the following code into the file:
+With the code above, you can create a random todo item and display todo items in a list. You can mark them as done, update the list, or revert that operation. You can also delete the items. Each change in the list is listened to with the subscription and immediately shown on the screen.
+If we take a closer look at the code:
+generateClient
+generates the necessary files and folders for models.
+TodoList
+component includes the subscription, creation operations, and a list to hold created items.
+TodoItem
+holds the information about each todo item.
+Lastly, update the
+App
+component in
+App.tsx
+as follows:
+If you run the application now, you should see the following behavior:
+You can terminate the sandbox environment now to clean up the project.
+Publishing changes to the cloud requires a remote git repository. Amplify offers fullstack branch deployments that allow you to automatically deploy infrastructure and application code changes from feature branches. To learn more, visit the
+fullstack branch deployments guide
+.
+That's it! You have successfully built a fullstack app on AWS Amplify. If you want to learn more about how to work with Amplify, here's the conceptual guide for
+how Amplify works
+.

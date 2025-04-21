@@ -1,0 +1,21 @@
+Override ID token claims
+You can use
+defineAuth
+and
+defineFunction
+to create an
+Amazon Cognito Pre token generation AWS Lambda trigger
+to override the token by adding a new claim or modifying the user's group membership.
+To get started, install the
+aws-lambda
+package, which is used to define the handler type.
+Create a new directory and a resource file,
+amplify/auth/pre-token-generation/resource.ts
+. Then, define the function with
+defineFunction
+:
+Then, create the corresponding handler file,
+amplify/auth/post-confirmation/pre-token-generation/handler.ts
+, file with the following contents:
+Lastly, set the newly created function resource on your auth resource:
+After deploying the changes, The idToken of the user will be modified as per the trigger above.

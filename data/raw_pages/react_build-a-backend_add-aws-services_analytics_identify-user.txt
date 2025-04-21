@@ -1,0 +1,18 @@
+Identify user
+This API sends information about the current user to Amazon Pinpoint.
+Additional information such as the user's name, email, location, and device can be included by specifying the
+UserProfile
+. Custom attributes can also be included by setting
+UserProfile.customProperties
+.
+If the user was signed in through
+signIn
+you can retrieve the current user's ID as shown below:
+Sending user information allows you to associate a user to their user profile and activities or actions in your app.  The user's actions and attributes can also tracked across devices and platforms by using the same
+userId
+.
+Some scenarios for identifying a user and their associated app activities are:
+When a user completes app sign up
+When a user completes sign in process
+When a user launches your app
+When a user modifies or updates their user profile

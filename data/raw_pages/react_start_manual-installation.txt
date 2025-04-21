@@ -1,0 +1,48 @@
+Manual installation
+To get started with AWS Amplify we recommend that you use our
+quickstart
+starter template. However, for some use cases, it may be preferable to start from scratch, either with a brand new directory or an existing frontend app. In that case we recommend to use
+npm
+with
+create-amplify
+.
+Running this command will scaffold a lightweight Amplify project in your current project with the following files:
+If needed, you can manually install AWS Amplify without using
+create-amplify
+or the starter template. This guide will walk you through how to initialize your project, install dependencies, and author your first backend.
+First, if your frontend framework of choice doesn't have it already, create your project's
+package.json
+with
+npm init -y
+. Then, install the Amplify dependencies for building a backend:
+Note
+: TypeScript is not a requirement but is recommended for an optimal experience.
+Next, create the entry point for your backend,
+amplify/backend.ts
+, with the following code:
+Now you can run
+npx ampx sandbox
+to create your first backend!
+Amplify Gen 2 requires your backend to be configured for use with
+ECMAScript modules (ESM)
+. If you encounter the following error during
+ampx sandbox
+, consider modifying your
+package.json
+with
+"type": "module"
+:
+Or, you can create a local file in the Amplify backend directory,
+amplify/package.json
+:
+You can use
+define*
+functions to
+define
+your resources. For example, you can define authentication:
+Or define your data resource:
+Each of these newly defined resources are then imported and set in the backend definition:
+You can also update an existing frontend app. To upgrade existing Amplify code-first DX (Gen 2) apps, use your Node.js package manager (for example,
+npm
+) to update relevant backend packages:
+We recommend the following next steps:

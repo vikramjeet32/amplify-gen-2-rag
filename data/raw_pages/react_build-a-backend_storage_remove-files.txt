@@ -1,0 +1,8 @@
+Remove files
+Files can be removed from a storage bucket using the
+remove
+API. If a file is protected by an identity Id, only the user who owns the file will be able to remove it.
+You can also perform a remove operation from a specific bucket by providing the target bucket's assigned name from Amplify Backend in
+bucket
+option.
+Alternatively, you can also pass in an object by specifying the bucket name and region from the console.

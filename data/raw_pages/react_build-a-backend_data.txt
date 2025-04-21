@@ -1,0 +1,2 @@
+Create, update, and delete application data
+Mutate application data in an API by generating the client, adding items, updating existing items, deleting items, troubleshooting unauthorized errors, and canceling requests.

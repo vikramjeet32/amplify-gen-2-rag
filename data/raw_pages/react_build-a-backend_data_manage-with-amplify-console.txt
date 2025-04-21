@@ -1,0 +1,97 @@
+Manage Data with Amplify console
+The
+Data manager
+page in the Amplify Console offers a user-friendly interface for managing the backend GraphQL API data of an application. It enables real-time creation and updates of application data, eliminating the need to build separate admin views.
+If you have not yet created a
+data
+resource, visit the
+Data setup guide
+.
+After you've deployed your data resource, you can access the manager on Amplify console.
+Log in to the
+Amplify console
+and choose your app.
+Select the branch you would like to access.
+Select
+Data
+from the left navigation bar.
+Then, select
+Data manager
+.
+On the
+Data manager
+page, select a table from the
+Select table
+dropdown. For this example, we are using a
+Todo
+table.
+Select
+Create Todo
+.
+In the
+Add Todo
+pane, specify your custom values for the fields in the table. For example, enter
+my first todo
+for the
+Content
+field and toggle the
+Is done
+field.
+Select
+Submit
+.
+On the
+Data manager
+page, select a table from the
+Select table
+dropdown.
+From the list of records, select a record you want to update.
+In the
+Edit Todo
+pane, make any changes to your record, and then select
+Submit
+.
+On the
+Data manager
+page, select a table from the
+Select table
+dropdown.
+From the list of records, select the checkbox to the left of the record(s) you want to delete.
+Select the
+Actions
+dropdown, and then select
+delete item(s)
+.
+On the
+Data manager
+page, select a table from the
+Select table
+dropdown.
+Select the
+Actions
+dropdown and then select
+Auto-generate data
+.
+In the
+Auto-generate data
+pane, specify how many rows of data you want to generate and constraints for the generated data.
+Then select
+Generate data
+You can generate up to 100 records at a time.
+Seed data cannot be generated for tables that have the following field types: AWSPhone, Enum, Custom Type, or Relationship
+On the
+Data manager
+page, select a table from the
+Select table
+dropdown.
+Select the
+Actions
+dropdown.
+Here you have two options for downloading data.
+Choose
+Download selected items (.csv)
+to download only the selected rows of data.
+Choose
+Download all items (.csv)
+to download all rows of records on the currently selected table.
+Once you have selected a download option, your data should immediately start downloading as a CSV file.

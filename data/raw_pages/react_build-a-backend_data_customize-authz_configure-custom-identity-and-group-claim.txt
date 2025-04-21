@@ -1,0 +1,73 @@
+Configure custom identity and group claims
+Amplify Data supports using custom identity and group claims if you do not wish to use the default Amazon Cognito-provided
+cognito:groups
+or the double-colon-delimited claims,
+sub::username
+, from your JWT token. This can be helpful if you are using tokens from a 3rd party OIDC system or if you wish to populate a claim with a list of groups from an external system, such as when using a
+Pre Token Generation Lambda Trigger
+which reads from a database.
+To use custom claims specify
+identityClaim
+or
+groupClaim
+as appropriate. In the example below, the
+identityClaim
+is specified and the record owner will check against this
+user_id
+claim. Similarly, if the
+user_groups
+claim contains a "Moderator" string then access will be granted.
+In your application, you can perform CRUD operations against the model using
+client.models.<model-name>
+with the
+userPool
+auth mode.
+import
+{
+generateClient
+}
+from
+'aws-amplify/data'
+;
+import
+type
+{
+Schema
+}
+from
+'../amplify/data/resource'
+;
+const
+client
+=
+generateClient
+<
+Schema
+>
+(
+)
+;
+const
+{
+errors
+,
+data
+:
+newTodo
+}
+=
+await
+client
+.
+models
+.
+Todo
+.
+create
+(
+content
+:
+'My post content'
+,
+Copy
+highlighted code example

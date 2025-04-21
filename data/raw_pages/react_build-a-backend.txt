@@ -1,0 +1,2 @@
+Fullstack TypeScript
+Write your app's data model, auth, storage, and functions in TypeScript; Amplify will do the rest.

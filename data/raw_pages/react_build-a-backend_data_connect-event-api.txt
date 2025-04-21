@@ -1,0 +1,29 @@
+Connect to AWS AppSync Events
+This guide walks through how you can connect to AWS AppSync Events using the Amplify library.
+AWS AppSync Events lets you create secure and performant serverless WebSocket APIs that can broadcast real-time event data to millions of subscribers, without you having to manage connections or resource scaling. With this feature, you can build multi-user features such as a collaborative document editors, chat apps, and live polling systems.
+Learn more about AWS AppSync Events by visiting the
+Developer Guide
+.
+Before you begin, you will need:
+An Event API created via the AWS Console
+Take note of: HTTP endpoint, region, API Key
+This guide walks through how you can add an Event API to an existing Amplify backend. We'll be using Cognito User Pools for authenticating with Event API from our frontend application. Any signed in user will be able to subscribe to the Event API and publish events.
+Before you begin, you will need:
+An existing Amplify backend (see
+Quickstart
+)
+Latest versions of
+@aws-amplify/backend
+and
+@aws-amplify/backend-cli
+(
+npm add @aws-amplify/backend@latest @aws-amplify/backend-cli@latest
+)
+First, we'll add a new Event API to our backend definition.
+To test your changes, deploy your Amplify Sandbox.
+After the sandbox deploys, connect your frontend application to the Event API. We'll be using the
+Amplify Authenticator component
+to sign in to our Cognito User Pool.
+If you don't already have the Authenticator installed, you can install it by running
+npm add @aws-amplify/ui-react
+.

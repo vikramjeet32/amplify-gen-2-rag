@@ -1,0 +1,136 @@
+Work with location search
+First, make sure you've provisioned a search index resource and configured your app using the instructions in either
+Configure Location Search
+or
+Use existing Amazon Location Service resources
+and you have already setup
+displaying a map
+in your application.
+To add a location search UI component to your map, you can use the
+maplibre-gl-geocoder
+library.
+maplibre-gl-js-amplify
+package makes it easy to integrate
+maplibre-gl-geocoder
+with Amplify Geo by exporting a utility function
+createAmplifyGeocoder()
+that returns an instance of
+maplibre-gl-geocoder
+with some pre-defined settings and supports all the
+options
+for customizing the UI component
+Install the necessary dependencies with the following command:
+Note:
+Make sure that
+maplibre-gl-js-amplify
+version
+4.0.0
+or above is installed.
+First, create a map onto which you want to add the location search UI component. See the guide on
+creating and displaying maps
+.
+Then, use
+createAmplifyGeocoder()
+to get a new instance of
+MaplibreGeocoder
+and add the location search UI component to the map.
+Note:
+Ensure that your package bundler (webpack, rollup, etc) is configured to handle css files. Check out the webpack documentation
+here
+.
+You can also use
+maplibre-gl-geocoder
+to display the location search UI component anywhere in your application, even outside the map.
+To do so, extract the html element using function
+onAdd()
+and attach it anywhere in your DOM instead of adding it via the map's
+addControl()
+function.
+You can customize the search icons used by the
+maplibre-gl-geocoder
+to use any image of your choosing.
+MapLibre markers
+require an
+HTMLElement
+when passing in custom images.
+The following example puts an existing SVG icon into an HTMLElement before being passed to
+createAmplifyGeocoder
+which creates a
+maplibre-gl-geocoder
+.
+Amplify Geo enables you to search for locations by text, addresses, or geo-coordinates.
+The
+Geo.searchByText()
+API enables you to search for places or points of interest by free-form text, such as an address, name, city, or region.
+Customize your search results further by providing:
+countries
+- to limit the search results to given countries (specified in
+ISO Alpha-3 country codes
+)
+maxResults
+- to limit the maximum result set
+biasPosition
+- to act as the search origination location
+searchAreaConstraints
+- to limit the area to search inside of
+searchIndexName
+- to use a different Location Service search index resource than the default
+Note:
+Providing both
+biasPosition
+and
+searchAreaConstraints
+parameters simultaneously returns an error.
+This returns places and their coordinates that match the search constraints. A place can also have additional metadata as shown in the example below.
+The
+Geo.searchByCoordinates()
+API is a reverse Geocoder that takes a coordinate point and returns information about what it finds at that point on the map. The returned object is the same shape as
+searchByText()
+API above.
+You can optionally limit your result set with the
+maxResults
+parameter or override the default search index with the
+searchIndexName
+parameter.
+The
+Geo.searchForSuggestions()
+API enables you to search for suggestions by free-form text, such as a place, address, city, or region.
+Similar to
+Geo.searchByText()
+API, customize your search results further by providing:
+countries
+- to limit the search results to given countries (specified in
+ISO Alpha-3 country codes
+)
+maxResults
+- to limit the maximum result set
+biasPosition
+- to act as the search origination location
+searchAreaConstraints
+- to limit the area to search inside of
+searchIndexName
+- to use a different Location Service search index resource than the default
+Note:
+Providing both
+biasPosition
+and
+searchAreaConstraints
+parameters simultaneously returns an error.
+This returns a list of suggestions (places and their respective
+placeId
+if available) that match the search constraints.
+In cases where
+placeId
+is not available on the list of suggestions as below, use
+searchByText
+to search for the selected place by text.
+This returns places and their coordinates that match the search text.
+The
+Geo.searchByPlaceId()
+API enables you to search for a place by a
+placeId
+, which is a unique opaque token for a place returned by the provider.
+You can optionally override the default search index with the
+searchIndexName
+parameter.
+This returns a place with metadata as shown in the example below.

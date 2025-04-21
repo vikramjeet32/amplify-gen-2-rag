@@ -1,0 +1,99 @@
+Quickstart
+Before you get started, make sure you have the following installed:
+Once you have installed Flutter, you can create a new Flutter project using the following command:
+In this Quickstart guide, you will build the application for web. However, if you want to run the application on other platforms, be sure to follow the required setup
+guide here
+.
+The easiest way to get started with AWS Amplify is through npm with
+create-amplify
+command. You can run it from your base project directory. First, go to the base project directory with the following command:
+After that, run the following to create an Amplify project:
+Running this command will scaffold Amplify backend files in your current project with the following files added:
+To deploy your backend use Amplify's per-developer cloud sandbox. This feature provides a separate backend environment for every developer on a team, ideal for local development and testing. To run your application with a sandbox environment, you can run the following command:
+The initial scaffolding already has a pre-configured auth backend defined in the
+amplify/auth/resource.ts
+file. We've configured it to support email and password login but you can extend it to support a variety of login mechanisms, including Google, Amazon, Sign In With Apple, and Facebook.
+The fastest way to get your login experience up and running is to use our Authenticator UI component available in the Amplify UI library.
+To use the Authenticator, you need to add the following dependencies to your project:
+You will add:
+amplify_flutter
+to connect your application with the Amplify resources.
+amplify_auth_cognito
+to connect your application with the Amplify Cognito resources.
+amplify_authenticator
+to use the Amplify UI components.
+After adding the dependencies, you need to run the following command to install the dependencies:
+Lastly update your main.dart file to use the Amplify UI components:
+The Authenticator component auto-detects your auth backend settings and renders the correct UI state based on the auth backend's authentication flow.
+Run your application in your local environment again. You should be presented with a login experience now.
+The initial scaffolding already has a pre-configured data backend defined in the
+amplify/data/resource.ts
+file. The default example will create a Todo model with
+content
+field.
+Let's modify this to add the following:
+A boolean
+isDone
+field.
+An authorization rules specifying owners, authenticated via your Auth resource can "create", "read", "update", and "delete" their own records.
+Update the
+defaultAuthorizationMode
+to sign API requests with the user authentication token.
+Next, let's implement UI to create, list, and delete the to-do items.
+Amplify can automatically generate code for interacting with the backend API. Run the command in the terminal to generate dart model classes from the Data schema under
+lib/models
+:
+Once you are done, add the API dependencies to your project. You will add
+amplify_api
+to connect your application with the Amplify API.
+After adding the dependencies, update the
+_configureAmplify
+method in your
+main.dart
+file to use the Amplify API:
+Next create a new widget called
+TodoScreen
+and add the following code to the end of the
+main.dart
+file:
+This will create a random Todo every time a user clicks on the floating action button. You can see the
+ModelMutations.create
+method is used to create a new Todo.
+And update the
+MyApp
+widget in your
+main.dart
+file like the following:
+Next add a
+_todos
+list in
+_TodoScreenState
+to add the results from the API and call the refresh function:
+and create a new function called
+_refreshTodos
+:
+and update the
+build
+function like the following:
+Now let's add the update and delete functionality.
+For update, add the following code to the
+onChanged
+method of the
+CheckboxListTile.adaptive
+widget:
+This will call the
+ModelMutations.update
+method to update the Todo with a copied/updated version of the todo item. So now the checkbox will get an update as well.
+For delete functionality, add the following code to the
+confirmDismiss
+method of the
+Dismissible
+widget:
+This will delete the Todo item when the user swipes the item from right to left. Now if you run the application you should see the following flow.
+You can terminate the sandbox environment now to clean up the project.
+Publishing changes to the cloud requires a remote git repository. Amplify offers fullstack branch deployments that allow you to automatically deploy infrastructure and application code changes from feature branches. To learn more, visit the
+fullstack branch deployments guide
+.
+That's it! You have successfully built a fullstack app on AWS Amplify. If you want to learn more about how to work with Amplify, here's the conceptual guide for
+how Amplify works
+.

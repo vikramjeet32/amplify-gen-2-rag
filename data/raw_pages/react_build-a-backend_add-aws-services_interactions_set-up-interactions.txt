@@ -1,0 +1,35 @@
+Set up Amplify Interactions
+AWS Amplify Interactions enables AI-powered chatbots in your web or mobile apps. You can use
+Interactions
+to configure your backend chatbot provider and to integrate a chatbot UI into your app with just a single line of code.
+AWS Amplify supports
+Amazon Lex
+as the default chatbots service. Amazon Lex supports creating conversational bots with the same deep learning technologies that power Amazon Alexa.
+You can create an Amazon Lex V2 chatbot in Amazon Lex console. To create your bot, follow the steps shown in
+Amazon Lex V2 Developer Guide
+.
+Amazon Lex service requires an IAM policy in order to use the interactions APIs (
+remember to replace the template with real value
+):
+Add the aws-amplify and interactions package to your project:
+Make sure that the
+@aws-amplify/interactions
+package has the same version number as the
+aws-amplify
+package in your
+package.json
+file.
+Import and load the configuration file in your app. It's recommended you add the Amplify configuration step to your app's root entry point. For example,
+App.js
+(Expo) or
+index.js
+(React Native CLI).
+Make sure you call
+Amplify.configure
+as early as possible in your applicationâs life-cycle. A missing configuration or
+NoCredentials
+error is thrown if
+Amplify.configure
+has not been called before other Amplify JavaScript APIs. Review the
+Library Not Configured Troubleshooting guide
+for possible causes of this issue.

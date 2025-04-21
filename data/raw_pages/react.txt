@@ -1,0 +1,13 @@
+Amplify Documentation for React
+AWS Amplify is everything you need to build web and mobile apps. Easy to start, easy to scale.
+You can build a fullstack app using Amplify backend building capabilities, or you can deploy your web app using Amplify Hosting.
+How Amplify works >
+Build fullstack apps with your framework of choice
+You can use AWS Amplify with popular web and mobile frameworks like JavaScript, Flutter, Swift, and React. Build, connect, and host fullstack apps on AWS. Get started by selecting your preferred framework.
+Features
+Code-first DX
+The fullstack TypeScript developer experience lets you focus on your app code instead of infrastructure.
+Fullstack Git deployments
+Deploy your frontend and backend together on every code commit. Your Git branch is the source of truth.
+Faster local development
+Per-developer cloud sandbox environments let you quickly iterate during development.

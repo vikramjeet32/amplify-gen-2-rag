@@ -1,0 +1,394 @@
+External identity providers
+Before you configure external sign-in with Amplify Auth you will need to set up your developer account with each provider you are using.
+Note:
+Amazon Cognito provides first class support for Facebook Login, Google Sign-In, Login with Amazon, and Sign in with Apple for seamless setup. However you can configure other Identity Providers that support SAML or OpenID Connect (OIDC).
+Warning:
+When configuring external sign-in it's important to exercise caution when designating attributes as "required." Different external identity providers have varied scopes in terms of the information they respond back to Cognito with.  User pool attributes that are initially set up as "required" cannot be changed later, and may require you to migrate the users or create a new user pool.
+Facebook Login
+Google Sign-In
+Login with Amazon
+Sign in with Apple
+Create a
+developer account with Facebook
+.
+Sign in
+with your Facebook credentials.
+Choose
+My Apps
+from the top navigation bar, and on the page that loads choose
+Create App
+.
+For your use case, choose
+Set up Facebook Login
+.
+For platform, choose
+Website
+and select
+No, I'm not building a game
+.
+Give your Facebook app a name and choose
+Create app
+.
+On the left navigation bar, choose
+Settings
+and then
+Basic
+.
+Note the
+App ID
+and the
+App Secret
+. You will use them in the next section in the CLI flow.
+Go to
+Google developer console
+.
+Click
+Select a project
+.
+Click
+NEW PROJECT
+.
+Type in project name and click
+CREATE
+.
+Once the project is created, from the left navigation menu, select
+APIs & Services
+, then select
+Credentials
+.
+Click
+CONFIGURE CONSENT SCREEN
+.
+Click
+CREATE
+.
+Type in
+App Information
+and
+Developer contact information
+which are required fields and click
+SAVE AND CONTINUE
+three times (OAuth consent screen -> Scopes -> Test Users) to finish setting up the consent screen.
+Back under the
+Credentials
+tab, Create your OAuth2.0 credentials by choosing
+OAuth client ID
+from the
+Create credentials
+drop-down list.
+.
+Choose
+Web application
+as
+Application type
+and name your OAuth Client.
+Click
+Create
+.
+Take note of
+Your client ID
+and
+Your Client Secret
+. You will need them for the next section in the CLI flow.
+Choose
+OK
+.
+Create a
+developer account with Amazon
+.
+Sign in
+with your Amazon credentials.
+You need to create an Amazon security profile to receive the Amazon Client ID and Client Secret. Choose
+Create a Security Profile
+.
+Type in a
+Security Profile Name
+, a
+Security Profile Description
+, and a
+Consent Privacy Notice URL
+.
+Choose
+Save
+.
+Choose
+Show Client ID
+and
+Client Secret
+to show the client ID and secret. You will need them for the next section in the CLI flow.
+Sign In
+with your Apple developer credentials.
+On the main developer portal page, select
+Certificates, IDs, & Profiles
+.
+On the left navigation bar, select
+Identifier
+.
+On the
+Identifiers
+page, select the
+plus icon (+)
+.
+On the
+Register a New Identifier
+page, select
+App IDs
+.
+On the
+Register an App ID
+page, under
+App ID Prefix
+, take note of the
+Team ID
+value.
+Provide a description in the
+Description
+text box and provide the
+bundleID
+of the iOS app.
+Under
+Capabilities
+, select
+Sign in with Apple
+.
+Select
+Continue
+, review the configuration, and then select
+Register
+.
+On the
+Identifiers
+page, on the right, select
+App IDs
+, and then select
+Services ID
+.
+Select the
+plus icon (+)
+and, on the
+Register a New Identifier
+page, select
+Services IDs
+.
+Provide a description in the
+Description
+text box and provide an identifier for the Service ID.
+Select
+Continue
+and register the Service ID.
+Your developer accounts with the external providers are now set up and you can return to the Amplify specific configuration.
+In
+amplify/auth/resource.ts
+the external providers need to be added.
+The following is an example of how you would set up access to all of the external providers supported by Amplify Auth. Please note you will need to configure your
+callbackUrls
+and
+logoutUrls
+URLs for your application, which will inform your backend resources how to behave when initiating sign in and sign out operations in your app.
+Secrets must be created manually with
+ampx sandbox secret
+for use with cloud sandbox, or via the Amplify Console for branch environments.
+You need to now inform your external provider of the newly configured authentication resource and its OAuth redirect URI:
+Facebook Login
+Google Sign-In
+Login with Amazon
+Sign in with Apple
+Sign In
+to your Facebook developer account with your Facebook credentials.
+Choose
+My Apps
+from the top navigation bar, and on the
+Apps
+page, choose your app you created before.
+On the left navigation bar, choose
+Products
+. Add
+Facebook Login
+if it isn't already added.
+If already added, choose
+Settings
+under the
+Configure
+dropdown.
+Under
+Valid OAuth Redirect URIs
+type your user pool domain with the
+/oauth2/idpresponse
+endpoint.
+https://<your-user-pool-domain>/oauth2/idpresponse
+Save your changes.
+Go to the
+Google developer console
+.
+On the left navigation bar, look for
+APIs and Services
+under
+Pinned
+or under
+More Products
+if not pinned.
+Within the
+APIs and Services
+sub menu, choose
+Credentials
+.
+Select the client you created in the first step and click the
+Edit
+button.
+Type your user pool domain into the
+Authorized JavaScript origins
+form.
+Type your user pool domain with the
+/oauth2/idpresponse
+endpoint into
+Authorized Redirect URIs
+.
+Note: If you saw an error message
+Invalid Redirect: domain must be added to the authorized domains list before submitting.
+when adding the endpoint, please go to the
+Authorized Domains List
+and add the domain.
+Click
+Save
+.
+Sign in
+with your Amazon credentials.
+Hover over the gear and choose
+Web Settings
+associated with the security profile you created in the previous step, and then choose
+Edit
+.
+Type your user pool domain into
+Allowed Origins
+and type your user pool domain with the
+/oauth2/idpresponse
+endpoint into
+Allowed Return URLs
+.
+Choose
+Save
+.
+Sign In
+with your Apple developer credentials.
+On the main developer portal page, select
+Certificates, IDs, & Profiles
+.
+On the left navigation bar, select
+Identifiers
+and then select
+Service IDs
+from the drop down list on the right.
+Select the Service ID created when you set up your auth provider as outlined in the section above.
+Enable
+Sign In with Apple
+and select
+Configure
+.
+Under
+Primary App ID
+select the App ID that was created before.
+Type your user pool domain into
+Domains and Subdomains
+.
+Type your user pool domain with the
+/oauth2/idpresponse
+endpoint into
+Return URLs
+.
+Click
+Next
+, review the information, then select
+Done
+.
+On
+Edit your Services ID Configuration
+click
+Continue
+, review the information, then select
+Save
+.
+On the main
+Certificates, Identifiers & Profiles
+, select
+Keys
+.
+On the
+Keys
+page, select the
+plus icon (+)
+.
+Provide a name for the key under
+Key Name
+.
+Enable
+Sign in with Apple
+and select
+Configure
+.
+Under
+Primary App ID
+select the App ID that was created before.
+Click on
+Save
+.
+On
+Register a New Key
+click
+Continue
+, review the information, then select
+Register
+.
+You will be redirected to a new page. Take note of the
+Key ID
+and download the .p8 file containing the private key.
+Learn more about using social identity providers with user pool
+You can determine the pieces of data you want to retrieve from each external provider when setting them up in the
+amplify/auth/resource.ts
+file using
+scopes
+.
+Identity provider (IdP) services store user attributes in different formats. When using external IdPs with Amazon Cognito user pools, attribute mapping allows you to standardize these varying formats into a consistent schema.
+Learn more about
+mapping IdP attributes to user pool profiles and tokens
+.
+Note:
+When a federated user signs in to your application, a mapping must be present for each attribute that your user pool requires. Additionally, you must also ensure that the target of each attribute mapping is mutable. Amazon Cognito will attempt to update each mapped attribute when a user signs in regardless of whether the latest value already matches the existing information. If these criteria are not met, Amazon Cognito will return an error and the sign in attempt will fail.
+Learn more about configuring the React Authenticator component for external providers
+To setup a OIDC provider, you can configure them in your
+amplify/auth/resource.ts
+file. For example, if you would like to setup a Microsoft EntraID provider, you can do so as follows:
+Use the
+signInWithRedirect
+API to initiate sign-in with an OIDC identity provider.
+To setup a SAML provider, you can configure them in your
+amplify/auth/resource.ts
+file. For example, if you would like to setup a Microsoft EntraID provider, you can do so as follows:
+Use the
+signInWithRedirect
+API to initiate sign-in with a SAML identity provider.
+If you are using the
+Authenticator component
+with Amplify, this feature works without any additional code. The guide below is for writing your own implementation.
+Use the
+signInWithRedirect
+API to initiate sign-in with an external identity provider.
+Sign in
+&
+Sign out
+redirect URL(s) are used to redirect end users after the sign in or sign out operation has occurred. You may want to specify multiple URLs for various use-cases such as having different URLs for development/ production or redirect users to an intermediate URL before returning them to the app.
+Specifying a redirect URL on sign out
+If you have multiple sign out redirect URLs configured, you may choose to override the default behavior of selecting a redirect URL and provide the one of your choosing when calling
+signOut
+. The provided redirect URL should match at least one of the configured redirect URLs. If no redirect URL is provided to
+signOut
+, one will be selected based on the current app domain.
+If you are developing a multi-page application, and the redirected page is not the same page that initiated the sign in, you will need to add the following code to the redirected page to ensure the sign in gets completed:
+Note:
+The listener only works on the client side in the context of a SSR-enabled project, so ensure to import the listener on the client side only. For example, in a Next.js project, you should add the above import statement to a component that renders on the client side only by
+'use client'
+.
+Why external Sign In needs to be explicitly handled for Multi-Page Applications
+When you import and use the
+signInWithRedirect
+function, it will add a listener as a side effect that will complete the external sign in when an end user is redirected back to your app. This works well in a single-page application but in a multi-page application, you might get redirected to a page that doesn't include the listener that was originally added as a side-effect. Hence you must include the specific OAuth listener on your login success page.
+Close accordion

@@ -1,0 +1,75 @@
+Upload files
+You can implement upload functionality in your app by either using the File Uploader UI component or further customizing the upload experience using the upload API.
+Upload files from your app in minutes by using the cloud-connected File Uploader UI Component.
+Then, use the component in your app.
+Learn more about how you can further customize the UI component by referring to the
+File Uploader documentation
+.
+The following is an example of how you would upload a file from a file object, this could be retrieved from the local machine or a different source.
+You can follow this example if you have data saved in memory and would like to upload this data to the cloud.
+You can also perform an upload operation to a specific bucket by providing the
+bucket
+option. You can pass in a string representing the target bucket's assigned name in Amplify Backend.
+import
+{
+uploadData
+}
+from
+'aws-amplify/storage'
+;
+const
+result
+=
+await
+uploadData
+(
+{
+path
+:
+'album/2024/1.jpg'
+,
+Copy
+highlighted code example
+bucket
+:
+'assignedNameInAmplifyBackend'
+Alternatively, you can also pass in an object by specifying the bucket name and region from the console.
+import
+{
+uploadData
+}
+from
+'aws-amplify/storage'
+;
+const
+result
+=
+await
+uploadData
+(
+{
+path
+:
+'album/2024/1.jpg'
+,
+Copy
+highlighted code example
+bucketName
+:
+'bucket-name-from-console'
+,
+Monitor progress of upload by using the
+onProgress
+option.
+We have callback functions that support resuming, pausing, and cancelling
+uploadData
+requests.
+Custom metadata can be associated with your uploaded object by passing the metadata option.
+The behavior of
+uploadData
+and properties of the uploaded object can be customized by passing in additional options.
+Uploads that were initiated over one hour ago will be cancelled automatically. There are instances (e.g. device went offline, user logs out) where the incomplete file remains in your Amazon S3 account. It is recommended to
+setup a S3 lifecycle rule
+to automatically cleanup incomplete upload requests.
+Amplify will automatically perform an Amazon S3 multipart upload for objects that are larger than 5MB. For more information about S3's multipart upload, see
+Uploading and copying objects using multipart upload

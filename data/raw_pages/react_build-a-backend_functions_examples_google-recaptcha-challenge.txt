@@ -1,0 +1,29 @@
+Google reCAPTCHA challenge
+You can use
+defineAuth
+and
+defineFunction
+to create an auth experience that requires a
+reCAPTCHA v3
+token. This can be accomplished by leveraging
+Amazon Cognito's feature to define a custom auth challenge
+and 3 triggers:
+Create auth challenge
+Define auth challenge
+Verify auth challenge response
+To get started, create the first of the three triggers,
+create-auth-challenge
+. This is the trigger responsible for creating the reCAPTCHA challenge after a password is verified.
+After creating the resource file, create the handler with the following contents:
+Next, you will want to create the trigger responsible for
+defining
+the auth challenge flow,
+define-auth-challenge
+.
+After creating the resource file, create the handler with the following contents:
+Lastly, create the trigger responsible for
+verifying
+the challenge response, which in this case is the reCAPTCHA token verification.
+If you have not done so already, you will need to register your application and retrieve a reCAPTCHA secret key. This can then be configured for use with your cloud sandbox using:
+After creating the resource file, create the handler with the following contents:
+Finally, import and set the three triggers on your auth resource:

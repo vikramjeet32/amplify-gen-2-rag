@@ -1,0 +1,399 @@
+Optimistic UI
+Amplify Data can be used with
+TanStack Query
+to implement optimistic UI, allowing CRUD operations to be rendered immediately on the UI before the request roundtrip has completed. Using Amplify Data with TanStack additionally makes it easy to render loading and error states, and allows you to rollback changes on the UI when API calls are unsuccessful.
+In the following examples we'll create a list view that optimistically renders newly created items, and a detail view that optimistically renders updates and deletes.
+To get started, run the following command in an existing Amplify project with a React frontend:
+Modify your Data schema to use this "Real Estate Property" example:
+Save the file and run
+npx ampx sandbox
+to deploy the changes to your backend cloud sandbox. For the purposes of this guide, we'll build a Real Estate Property listing application.
+Next, at the root of your project, add the required TanStack Query imports, and create a client:
+TanStack Query Devtools are not required, but are a useful resource for debugging and understanding how TanStack works under the hood. By default, React Query Devtools are only included in bundles when
+process.env.NODE_ENV === 'development'
+, meaning that no additional configuration is required to exclude them from a production build.
+For more information on the TanStack Query Devtools, visit the
+TanStack Query Devtools docs
+For the complete working example, including required imports and React component state management, see the
+Complete Example
+below.
+TanStack Query manages query caching based on the query keys you specify. A query key must be an array. The array can contain a single string or multiple strings and nested objects. The query key must be serializable, and unique to the query's data.
+When using TanStack to render optimistic UI with Amplify Data, you must use different query keys depending on the API operation. When retrieving a list of items, a single string is used (e.g.
+queryKey: ["realEstateProperties"]
+). This query key is also used to optimistically render a newly created item. When updating or deleting an item, the query key must also include the unique identifier for the record being deleted or updated (e.g.
+queryKey: ["realEstateProperties", newRealEstateProperty.id]
+).
+For more detailed information on query keys, see the
+TanStack Query documentation
+.
+To optimistically render a list of items returned from the Amplify Data API, use the TanStack
+useQuery
+hook, passing in the Data API query as the
+queryFn
+parameter. The following example creates a query to retrieve all records from the API. We'll use
+realEstateProperties
+as the query key, which will be the same key we use to optimistically render a newly created item.
+To optimistically render a newly created record returned from the Amplify Data API, use the TanStack
+useMutation
+hook, passing in the Amplify Data API mutation as the
+mutationFn
+parameter. We'll use the same query key used by the
+useQuery
+hook (
+realEstateProperties
+) as the query key to optimistically render a newly created item.
+We'll use the
+onMutate
+function to update the cache directly, as well as the
+onError
+function to rollback changes when a request fails.
+import
+{
+generateClient
+}
+from
+'aws-amplify/api'
+import
+type
+{
+Schema
+}
+from
+'../amplify/data/resource'
+Copy
+highlighted code example
+import
+{
+useQueryClient
+,
+useMutation
+}
+from
+'@tanstack/react-query'
+const
+client
+=
+generateClient
+<
+Schema
+>
+(
+)
+Copy
+highlighted code example
+const
+queryClient
+=
+useQueryClient
+(
+)
+;
+Copy
+highlighted code example
+const
+createMutation
+=
+useMutation
+(
+{
+mutationFn
+:
+async
+(
+input
+:
+{
+name
+:
+string
+,
+address
+:
+string
+}
+)
+=>
+{
+const
+{
+data
+:
+newRealEstateProperty
+}
+=
+await
+client
+.
+models
+.
+RealEstateProperty
+.
+create
+(
+input
+)
+return
+newRealEstateProperty
+;
+onMutate
+:
+async
+(
+newRealEstateProperty
+)
+=>
+{
+await
+queryClient
+.
+cancelQueries
+(
+{
+queryKey
+:
+[
+"realEstateProperties"
+]
+}
+)
+;
+const
+previousRealEstateProperties
+=
+queryClient
+.
+getQueryData
+(
+[
+if
+(
+previousRealEstateProperties
+)
+{
+queryClient
+.
+setQueryData
+(
+[
+"realEstateProperties"
+]
+,
+(
+old
+:
+Schema
+[
+"RealEstateProperty"
+]
+[
+"type"
+]
+[
+]
+)
+=>
+[
+return
+{
+previousRealEstateProperties
+}
+;
+onError
+:
+(
+err
+,
+newRealEstateProperty
+,
+context
+)
+=>
+{
+console
+.
+error
+(
+"Error saving record:"
+,
+err
+,
+newRealEstateProperty
+)
+;
+if
+(
+context
+?.
+previousRealEstateProperties
+)
+{
+queryClient
+.
+setQueryData
+(
+[
+"realEstateProperties"
+]
+,
+context
+.
+previousRealEstateProperties
+queryClient
+.
+invalidateQueries
+(
+{
+queryKey
+:
+[
+"realEstateProperties"
+]
+}
+)
+;
+To optimistically render updates on a single item, we'll first retrieve the item from the API. We'll use the
+useQuery
+hook, passing in the
+get
+query as the
+queryFn
+parameter. For the query key, we'll use a combination of
+realEstateProperties
+and the record's unique identifier.
+import
+{
+generateClient
+}
+from
+'aws-amplify/data'
+import
+type
+{
+Schema
+}
+from
+'../amplify/data/resource'
+import
+{
+useQuery
+}
+from
+'@tanstack/react-query'
+const
+client
+=
+generateClient
+<
+Schema
+>
+(
+)
+const
+currentRealEstatePropertyId
+=
+"SOME_ID"
+Copy
+highlighted code example
+data
+:
+realEstateProperty
+,
+queryKey
+:
+[
+"realEstateProperties"
+,
+currentRealEstatePropertyId
+]
+,
+if
+(
+!
+currentRealEstatePropertyId
+)
+{
+return
+}
+const
+{
+data
+:
+property
+}
+=
+await
+client
+.
+models
+.
+RealEstateProperty
+.
+get
+(
+{
+id
+:
+currentRealEstatePropertyId
+,
+To optimistically render Amplify Data updates for a single record, use the TanStack
+useMutation
+hook, passing in the update mutation as the
+mutationFn
+parameter. We'll use the same query key combination used by the single record
+useQuery
+hook (
+realEstateProperties
+and the record's
+id
+) as the query key to optimistically render the updates.
+We'll use the
+onMutate
+function to update the cache directly, as well as the
+onError
+function to rollback changes when a request fails.
+When directly interacting with the cache via the
+onMutate
+function, the
+newRealEstateProperty
+parameter will only include fields that are being updated. When calling
+setQueryData
+, include the previous values for all fields in addition to the newly updated fields to avoid only rendering optimistic values for updated fields on the UI.
+To optimistically render a deletion of a single record, use the TanStack
+useMutation
+hook, passing in the delete mutation as the
+mutationFn
+parameter. We'll use the same query key combination used by the single record
+useQuery
+hook (
+realEstateProperties
+and the record's
+id
+) as the query key to optimistically render the updates.
+We'll use the
+onMutate
+function to update the cache directly, as well as the
+onError
+function to rollback changes when a delete fails.
+Both
+useQuery
+and
+useMutation
+return
+isLoading
+and
+isError
+states that indicate the current state of the query or mutation. You can use these states to render loading and error indicators.
+In addition to operation-specific loading states, TanStack Query provides a
+useIsFetching
+hook
+. For the purposes of this demo, we show a global loading indicator in the
+Complete Example
+when
+any
+queries are fetching (including in the background) in order to help visualize what TanStack is doing in the background:
+For more details on advanced usage of TanStack Query hooks, see the
+TanStack documentation
+.
+The following example demonstrates how to use the state returned by TanStack to render a loading indicator while a mutation is in progress, and an error message if the mutation fails. For additional examples, see the
+Complete Example
+below.

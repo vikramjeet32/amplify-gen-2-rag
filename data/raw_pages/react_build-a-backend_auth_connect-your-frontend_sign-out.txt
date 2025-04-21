@@ -1,0 +1,9 @@
+Sign-out
+Amplify provides a client library that enables you to interact with backend resources such as Amplify Auth.
+The quickest way to get started with Amplify Auth in your frontend application is with the
+Authenticator component
+, which provides a customizable UI and complete authentication flows.
+To sign a user out of your application use the
+signOut
+API.
+You can also sign out users from all devices by performing a global sign-out. This will also invalidate all refresh tokens issued to a user. The user's current access and ID tokens will remain valid on other devices until the refresh token expires (access and ID tokens expire one hour after they are issued).

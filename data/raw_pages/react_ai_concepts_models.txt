@@ -1,0 +1,42 @@
+Models
+A foundation model is a large, general-purpose machine learning model that has been pre-trained on a vast amount of data. These models are trained in an unsupervised or self-supervised manner, meaning they learn patterns and representations from the unlabeled training data without being given specific instructions or labels.
+Foundation models are useful because they are general-purpose and you don't need to train the models yourself, but are powerful enough to take on a range of applications.
+Foundation Models, which Large Language Models are a part of, are inherently stateless. They take input in the form of text or images and generate text or images. They are also inherently non-deterministic. Providing the same input can  generate different output.
+Before you can invoke a foundation model on Bedrock you will need to
+request access to the models in the AWS console
+.
+Be sure to check the region you are building your Amplify app in!
+Each foundation model in Amazon Bedrock has its own pricing and throughput limits for on-demand use. On-demand use is serverless, you don't need to provision any AWS resources to use and you only pay for what you use. The Amplify AI kit uses on-demand use for Bedrock.
+The cost for using foundation models is calculated by token usage. A token in generative AI refers to chunks of data that were sent as input and how much data was generated. A token is roughly equal to a word, but depends on the model being used. Each foundation model in Bedrock has its own pricing based on input and output tokens used.
+When you use the Amplify AI Kit, inference requests are charged to your AWS account based on Bedrock pricing. There is no Amplify markup, you are just using AWS resources in your own account.
+Always refer to
+Bedrock pricing
+for the most up-to-date information on running generative AI with Amplify AI Kit.
+Your Amplify project must be deployed to a region where the foundation model you specify is available. See
+Bedrock model support
+for the supported regions per model.
+The Amplify AI Kit uses Bedrock's
+Converse API
+to leverage a unified API across models.
+Amplify AI Kit makes use of
+"tools"
+for both generation and conversation routes.
+The models used must support tool use in the Converse API
+.
+Most models have different structures to how they best work with input and how they format their output. Using the Converse API makes it easy to swap different models without having to drastically change how you interact with them.
+Each model and model provider has their own strengths and weaknesses. We encourage you to try different models for different use-cases to find the right fit. Things to consider when choosing a model:
+Each model has its own context window size. The context window is how much information you can send to the model. FMs are stateless, but conversation routes manage message history, so the context window can continue to grow as you "chat" with a model. The context window for models is defined by the number of tokens it can receive.
+Smaller models tend to have a lower latency than larger models, but can also sometimes be less powerful.
+Each model has its own price and throughput.
+Some models are trained to be better at certain tasks or with certain languages.
+Choosing the right model for your use case is balancing latency, cost, and performance.
+Using the Amplify AI Kit you can easily use different models for different functionality in your application. Each AI route definition will have an
+aiModel
+attribute you define in your schema. To use different foundation models in your Amplify AI backend, update the
+aiModel
+using
+a.ai.model()
+:
+The
+a.ai.model()
+function gives you access to friendly names for the Bedrock models. We will keep this function up-to-date as new models are added to Bedrock. In case there is a new model that has not yet been added, you can always use the model ID which can be found in the Bedrock console or documentation:

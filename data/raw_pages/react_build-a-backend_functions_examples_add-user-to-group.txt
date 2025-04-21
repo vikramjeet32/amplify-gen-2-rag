@@ -1,0 +1,31 @@
+Add user to group
+You can use
+defineAuth
+and
+defineFunction
+to create a
+Cognito post confirmation Lambda trigger
+that extends the behavior to perform some action when a user is confirmed.
+A user is "confirmed" when they verify their account. Typically this happens when the user confirms their email via the verification email. The post confirmation handler will
+not
+be triggered for federated sign-ins (i.e. social sign-in).
+To get started, install the AWS SDK v3 package, which will be used to perform actions against your auth resource, and the
+@types/aws-lambda
+package, which is used to define the handler type:
+Next, create a new directory and a resource file,
+amplify/auth/post-confirmation/resource.ts
+. Then, define the Function with
+defineFunction
+:
+After creating the Function definition you will need to:
+create the
+EVERYONE
+group
+grant access to your auth resource to ensure it can perform the
+addUserToGroup
+action
+set the Function as the post confirmation trigger
+Then create the Function's corresponding handler file,
+amplify/auth/post-confirmation/handler.ts
+, file with the following contents:
+After deploying the changes, whenever a user signs up and verifies their account they are automatically added to the group named "EVERYONE".

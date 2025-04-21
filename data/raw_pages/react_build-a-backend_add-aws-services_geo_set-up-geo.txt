@@ -1,0 +1,44 @@
+Set up Amplify Geo
+Amplify provides APIs and map UI components for maps and location search for your web apps.You can add maps and location search functionality to your app in just a few lines of code. The following is an example utilizing the
+AWS Cloud Development Kit (AWS CDK)
+to create a Geo resource powered by
+Amazon Location Services
+. But do note there are no official hand-written (L2) constructs for this service yet.
+To display a map in your application, you can use the
+Amplify React MapView component
+or the
+MapLibre GL
+with
+maplibre-gl-js-amplify
+libraries are required.
+Install the necessary dependencies by running the following command:
+Note:
+Make sure that version
+6.0.0
+or above is installed.
+Import and load the configuration file in your app. It's recommended you add the Amplify configuration step to your app's root entry point.
+Make sure you call
+Amplify.configure
+as early as possible in your applicationâs life-cycle. A missing configuration or
+NoCredentials
+error is thrown if
+Amplify.configure
+has not been called before other Amplify JavaScript APIs.
+Notes:
+If you want to use existing Amazon Location Service resources
+follow this guide
+instead.
+If you want to use Amazon Location Service APIs not directly supported by Geo, use the
+escape hatch
+to access the Amazon Location Service SDK.
+Location Construct Library
+The pricing plan for the Map example is set to
+RequestBasedUsage
+.
+We advice you to go through the
+location service pricing
+along with the
+location service terms
+(
+82.5 section
+) to learn more about the pricing plan.

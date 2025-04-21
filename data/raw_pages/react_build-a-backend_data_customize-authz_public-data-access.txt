@@ -1,0 +1,81 @@
+Public data access
+The public authorization strategy grants everyone access to the API, which is protected behind the scenes with an API key. You can also override the authorization provider to use an unauthenticated IAM role from Cognito instead of an API key for public access.
+To grant everyone access, use the
+.public()
+authorization strategy. Behind the scenes, the API will be protected with an API key.
+In your application, you can perform CRUD operations against the model using
+client.models.<model-name>
+by specifying the
+apiKey
+auth mode.
+import
+{
+generateClient
+}
+from
+'aws-amplify/data'
+;
+import
+type
+{
+Schema
+}
+from
+'../amplify/data/resource'
+;
+const
+client
+=
+generateClient
+<
+Schema
+>
+(
+)
+;
+const
+{
+errors
+,
+data
+:
+newTodo
+}
+=
+await
+client
+.
+models
+.
+Todo
+.
+create
+(
+Copy
+highlighted code example
+If the API key has not expired, you can extend the expiration date by deploying your app again. The API key expiration date will be set to
+expiresInDays
+days from the date when the app is deployed. In the example below, the API key will expire 7 days from the latest deployment.
+You can rotate an API key if it was expired, compromised, or deleted. To rotate an API key, you can override the logical ID of the API key resource in the
+amplify/backend.ts
+file. This will create a new API key with a new logical ID.
+Deploy your app. After the deploy has finished, remove the override to the logical ID and deploy your app again to use the default logical ID.
+A new API key will be created for your app.
+You can also override the authorization provider. In the example below,
+identityPool
+is specified as the provider which allows you to use an "Unauthenticated Role" from the Cognito identity pool for public access instead of an API key. Your Auth resources defined in
+amplify/auth/resource.ts
+generates scoped down IAM policies for the "Unauthenticated role" in the Cognito identity pool automatically.
+In your application, you can perform CRUD operations against the model using
+client.models.<model-name>
+with the
+identityPool
+auth mode.
+If you're not using the auto-generated
+amplify_outputs.json
+file, then you must set the Amplify Library resource configuration's
+allowGuestAccess
+flag to
+true
+. This lets the Amplify Library use the unauthenticated role from your Cognito identity pool when your user isn't logged in.
+Close accordion

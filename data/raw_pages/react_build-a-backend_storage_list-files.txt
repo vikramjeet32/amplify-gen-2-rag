@@ -1,0 +1,62 @@
+List file properties
+You can list files without having to download all the files. You can do this by using the
+list
+API from the Amplify Library for Storage. You can also get properties individually for a file using the
+getProperties
+API.
+Note the trailing slash
+/
+- if you had requested
+list({ path :  'album/photos' })
+it would also match against files like
+album/photos123.jpg
+alongside
+album/photos/123.jpg
+.
+The format of the response will look similar to the below example:
+If the
+pageSize
+is set lower than the total file size, a single
+list
+call only returns a subset of all the files. To list all the files with multiple calls, users can use the
+nextToken
+flag:
+Manually created folders will show up as files with a
+size
+of 0, but you can also match keys against a regex like
+file.key.match(/\.[0-9a-z]+$/i)
+to distinguish files from folders. Since "folders" are a virtual concept in Amazon S3, any file may declare any depth of folder just by having a
+/
+in its name.
+To access the contents and subpaths of a "folder", you have two options:
+Request the entire path and parse the contents.
+Use the subpathStrategy option to retrieve only the files within the specified path (i.e. exclude files under subpaths).
+This retrieves all files and folders under a given path. You may need to parse the result to get only the files within the specified path.
+If you need the files and folders in terms of a nested object instead (for example, to build an explorer UI), you could parse it recursively:
+This places each item's data inside a special
+__data
+key.
+In addition to using the
+list
+API to get all the contents of a path, you can also use it to get only the files within a path while excluding files under subpaths.
+For example, given the following keys in your
+path
+you may want to return only the jpg object, and not the "vacation" subpath and its contents:
+This can be accomplished with the
+subpathStrategy
+option:
+The response will include only the objects within the
+photos/
+path and will also communicate any excluded subpaths:
+The default delimiter character is '/', but this can be changed by supplying a custom delimiter:
+You can also perform an
+copy
+operation to a specific bucket by providing the
+bucket
+option. This option can either be a string representing the target bucket's assigned name in Amplify Backend or an object specifying the bucket name and region from the console.
+You can also view the properties of an individual file.
+The properties and metadata will look similar to the below example
+To get the metadata in result for all APIs you have to configure user defined metadata in CORS.
+Learn more about how to setup an appropriate
+CORS Policy
+.

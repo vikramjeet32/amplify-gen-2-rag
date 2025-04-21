@@ -1,0 +1,32 @@
+Custom message
+You can use
+defineAuth
+and
+defineFunction
+to create an
+Amazon Cognito custom message AWS Lambda trigger
+thats sends an custom email or phone verification message, or a multi-factor authentication (MFA) code.
+To get started, install
+@types/aws-lambda
+package that will be used to define the type of the handler:
+Next, create a new directory and a resource file,
+amplify/auth/custom-message/resource.ts
+. Then, define the function with
+defineFunction
+:
+Next, create the corresponding handler file,
+amplify/auth/custom-message/handler.ts
+, file with the following contents:
+The input event for the
+CustomMessage_AdminCreateUser
+trigger source includes both a username and verification code. Admin-created users must receive both their username and code in order to sign in and thus you must include both the
+usernameParameter
+and
+codeParameter
+in your message template.
+Lastly, set the newly created function resource on your auth resource:
+After deploying the changes, whenever a user with user attribute
+locale
+set to
+es
+attempts to reset a password they will receive an email with a one-time code in Spanish.

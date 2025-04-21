@@ -1,0 +1,28 @@
+Conversation
+The conversation route simplifies the creation of AI-powered conversation interfaces in your application. It automatically sets up the necessary AppSync API components and Lambda functions to handle streaming multi-turn interactions with Amazon Bedrock foundation models.
+AppSync API
+: Gateway to the conversation route.
+Create new conversation route instance.
+Send messages to conversation route instance.
+Subscribe to real-time updates for assistant responses.
+Lambda Function
+: Bridge between AppSync and Amazon Bedrock.
+Retrieve conversation instance history.
+Invokes Bedrock's /converse endpoint.
+Handles tool use responses by invoking AppSync queries.
+DynamoDB
+: Stores conversation and message data
+Conversations are scoped to a specific application user.
+The user's OIDC access token is passed from the client to AppSync
+AppSync forwards this token to the Lambda function
+The Lambda function uses the token to authenticate requests back to AppSync
+Each of the following scenarios have safeguards in place to mitigate risks associated with invoking tools on behalf of the user, including:
+Amazon CloudWatch log group redacting OIDC access tokens for logs from the Lambda function.
+IAM policies that limit the Lambda function's ability to access other resources.
+User sends a message via the AppSync mutation
+AppSync triggers the Lambda function (default or custom)
+Lambda processes the message and invokes Bedrock's /converse endpoint
+a. If response is a tool use, Lambda function invokes applicable AppSync query.
+Lambda sends assistant response back to AppSync
+AppSync sends the response to subscribed clients
+This design allows for real-time, scalable conversations while ensuring that the Lambda function's data access matches that of the application user.

@@ -1,0 +1,107 @@
+Connect to Amazon Bedrock for generative AI use cases
+Amazon Bedrock
+is a fully managed service that removes the complexity of using foundation models (FMs) for generative AI development. It acts as a central hub, offering a curated selection of high-performing FMs from leading AI companies like Anthropic, AI21 Labs, Cohere, and Amazon itself.
+Amazon Bedrock streamlines generative AI development by providing:
+Choice and Flexibility
+: Experiment and evaluate a wide range of FMs to find the perfect fit for your use case.
+Simplified Integration
+: Access and use FMs through a single, unified API, reducing development time.
+Enhanced Security and Privacy
+: Benefit from built-in safeguards to protect your data and prevent misuse.
+Responsible AI Features
+: Implement guardrails to control outputs and mitigate bias.
+In the following sections, we walk through the steps to add Amazon Bedrock to your API as a data source and connect to it from your Amplify app:
+Add Amazon Bedrock as a data source
+Define a custom query
+Configure custom business logic handler code
+Invoke a custom query to prompt a generative AI model
+To connect to Amazon Bedrock as a data source, you can choose between two methods - using a Lambda function or a custom resolver powered by AppSync JavaScript resolvers. The following steps demonstrate both methods:
+Function
+Custom resolver powered by AppSync JavaScript resolvers
+In your
+amplify/backend.ts
+file, replace the content with the following code to add a lambda function to your backend and grant it permission to invoke a generative AI model in Amazon Bedrock. The
+generateHaikuFunction
+lambda function will be defined in and exported from the
+amplify/data/resource.ts
+file in the next steps:
+In your
+amplify/backend.ts
+file, replace the content with the following code to add an HTTP data source for Amazon Bedrock to your API and grant it permissions to invoke a generative AI model:
+For the purpose of this guide, we will use Anthropic's Claude 3 Haiku to generate content. If you want to use a different model, you can find the ID for your model of choice in the Amazon Bedrock documentation's
+list of model IDs
+or the
+Amazon Bedrock console
+and replace the value of
+MODEL_ID
+.
+The availability of Amazon Bedrock and its foundation models may vary by region.
+The policy statement in the code above assumes that your Amplify app is deployed in a region supported by Amazon Bedrock and the Claude 3 Haiku model. If you are deploying your app in a region where Amazon Bedrock is not available, update the code above accordingly.
+For a list of supported regions please refer to the
+Amazon Bedrock documentation
+.
+Function
+Custom resolver powered by AppSync JavaScript resolvers
+Next, replace the contents of your
+amplify/data/resource.ts
+file with the following code. This will define and export a lambda function that was granted permission to invoke a generative AI model in Amazon Bedrock in the previous step. A custom query named
+generateHaiku
+is added to the schema with the
+generateHaikuFunction
+as the handler using the
+a.handler.function()
+modifier:
+With Amazon Bedrock added as a data source, you can reference it in custom queries using the
+a.handler.custom()
+modifier which accepts the name of the data source and an entry point for your resolvers. Replace the contents of your
+amplify/data/resource.ts
+file with the following code to define a custom query named
+generateHaiku
+in the schema:
+Function
+Custom resolver powered by AppSync JavaScript resolvers
+Next, create a
+generateHaiku.ts
+file in your
+amplify/data
+folder and use the following code to define a custom resolver for the custom query added to your schema in the previous step:
+The following code uses the
+BedrockRuntimeClient
+from the
+@aws-sdk/client-bedrock-runtime
+package to invoke the generative AI model in Amazon Bedrock. The
+handler
+function takes the user prompt as an argument, invokes the model, and returns the generated haiku.
+Next, create a
+generateHaiku.js
+file in your
+amplify/data
+folder and use the following code to define a custom resolver for the custom query added to your schema in the previous step:
+The following code defines a
+request
+function that constructs the HTTP request to invoke the generative AI model in Amazon Bedrock. The
+response
+function parses the response and returns the generated haiku.
+The code above uses the
+Messages API
+, which is supported by chat models such as Anthropic's Claude 3 Haiku.
+The
+system
+prompt is used to give the model a persona or directives to follow, and the
+messages
+array can contain a history of messages. The
+max_tokens
+parameter controls the maximum number of tokens the model can generate, and the
+temperature
+parameter determines the randomness, or creativity, of the generated response.
+From your generated Data client, you can find all your custom queries and mutations under the
+client.queries
+and
+client.mutations
+APIs respectively.
+The custom query below will prompt a generative AI model to create a haiku based on the given prompt. Replace the
+prompt
+value with your desired prompt text or user input and invoke the query as shown below:
+Here's an example of a simple UI that prompts a generative AI model to create a haiku based on user input:
+In this guide, you learned how to connect to Amazon Bedrock from your Amplify app. By adding Bedrock as a data source, defining a custom query, configuring custom business logic handler code, and invoking custom queries, you can leverage the power of generative AI models in your application.
+To clean up, you can delete your sandbox by accepting the prompt when terminating the sandbox process in your terminal. Alternatively, you can also use the AWS Amplify console to manage and delete sandbox environments.

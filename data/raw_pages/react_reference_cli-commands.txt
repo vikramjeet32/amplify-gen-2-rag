@@ -1,0 +1,368 @@
+CLI commands
+This page serves as a reference for commands found in the
+@aws-amplify/backend-cli
+package.
+All commands can be prefixed with
+AWS CLI environment variables
+to change the AWS account behavior with Amplify Gen 2 commands.
+Sandbox enables you to develop your backend alongside your frontend's development server. Run
+npx ampx sandbox
+to deploy to your personal cloud sandbox, this command will automatically watch for changes in the
+amplify/
+folder, and redeploy each time you save a file.
+--stream-function-logs
+(
+boolean
+) - Whether to stream function execution logs. (default: false)
+--logs-filter
+(
+array
+) - Regex pattern to filter logs from only matched functions. E.g. to stream logs for a function, specify it's name, and to stream logs from all functions starting with auth specify 'auth' (default: Stream all logs)
+--logs-out-file
+(
+string
+) - File to append the streaming logs. The file is created if it does not exist. (default: stdout)
+--debug
+(
+boolean
+) - Print debug logs to the console (default: false)
+--dir-to-watch
+(
+string
+) - Directory to watch for file changes. All subdirectories and files will be included. Defaults to the amplify directory.
+--exclude
+(
+string[]
+) - An array of paths or glob patterns to ignore. Paths can be relative or absolute and can either be files or directories.
+--identifier
+(
+string
+) - An optional name to distinguish between different sandbox environments. Default is the name of the system user executing the process
+--once
+(
+boolean
+) - Execute a single sandbox deployment without watching for future file changes.
+--outputs-out-dir
+(
+string
+) - A path to a directory where the client config file is written. If not provided, defaults to the working directory of the current process.
+--outputs-format
+(
+string
+) - Format in which the client config file is written (choices:
+json
+,
+dart
+).
+--outputs-version
+(
+string
+) - Version of the configuration. Version 0 represents classic amplify-cli config file amplify-configuration and 1 represents newer config file amplify_outputs (choices:
+0
+,
+1
+).
+--profile
+(
+string
+) - An AWS profile name.
+Use with an alternate profile
+You can use the
+--profile
+flag to run sandbox with an AWS profile other than
+default
+:
+Additionally, you can use AWS CLI environment variables to specify a different profile:
+Use with an alternate Region
+Use AWS environment variables to deploy to a Region other than your AWS profile's configured Region:
+Use with mobile applications
+For mobile applications, you will need to set the output directory and format of the generated configuration file, specifically
+amplify_outputs.json
+:
+Delete your personal cloud sandbox. This should only be used if you have an active cloud sandbox that you opted to
+not
+delete when exiting
+npx ampx sandbox
+.
+--name
+(
+string
+) - An optional name to distinguish between different sandbox environments. Default is the name in your package.json.
+--profile
+(
+string
+) - An AWS profile name.
+-y, --yes
+(
+boolean
+) - Do not ask for confirmation before deleting the sandbox environment.
+Manage backend secrets used with your personal cloud sandbox.
+--profile
+(
+string
+) - An AWS profile name.
+Using with an alternate AWS profile
+You can use the
+--profile
+flag to run sandbox with an AWS profile other than
+default
+:
+Additionally, you can use AWS environment variables to specify a different profile:
+Creating a secret
+Create secrets for use with your personal cloud sandbox by using
+sandbox secret set
+:
+This is how you configure secrets to be retrieved and used within your backend using
+secret()
+.
+Removing a secret
+If you want to remove a secret you previously set, use
+sandbox secret remove
+:
+Removing all secrets
+If you want to remove all secrets you previously set, use
+sandbox secret remove --all
+:
+Listing secrets
+List all available secrets for your personal sandbox in the default AWS profile and Region:
+Get a secret and view its details
+You can view an existing secret and its details, such as the current version and when it was last updated:
+Generate is not intended to be used standalone; however, it does offer a few subcommands to generate information or code that is supplemental to your frontend development.
+Each of the following
+generate
+subcommands require either a CloudFormation stack name or an existing Amplify App ID and corresponding git branch:
+Generate the backend outputs file (e.g.
+amplify_outputs.json
+) for your frontend application to consume. This is intended to be used to manually generate a configuration file for an environment other than your personal cloud sandbox. For example, you might use it if you would like to verify something your coworker is seeing in their cloud sandbox, or to demonstrate frontend changes locally using a pre-existing "staging" branch.
+In addition to the required options noted in
+ampx generate
+:
+--profile
+(
+string
+) - An AWS profile name.
+--format
+(
+string
+) - The format into which the configuration should be exported (choices:
+json
+,
+dart
+).
+--out-dir
+(
+string
+) - A path to the directory where config is written. If not provided, it defaults to the working directory of the current process.
+--outputs-version
+(
+string
+) - Version of the configuration. Version 0 represents classic amplify-cli config file amplify-configuration and 1 represents newer config file amplify_outputs (choices:
+0
+,
+1
+).
+As mentioned above, you can specify a team member's cloud sandbox CloudFormation stack:
+Use with mobile applications
+Similar to
+sandbox
+, you can specify an alternate outputs file format by using
+--format
+:
+Use with pre-existing branch
+If you have a pre-existing branch that you want to generate outputs for, you can use the
+--branch
+with the
+--app-id
+flag:
+Generate GraphQL statements and types for your frontend application to consume.
+The available parameters for
+npx ampx generate graphql-client-code
+are:
+Required parameters:
+Stack identifier
+--stack
+(
+string
+) - A stack name that contains an Amplify backend.
+Project identifier
+--app-id
+(
+string
+) - The Amplify App ID of the project.
+--branch
+(
+string
+) - A git branch of the Amplify project.
+Optional parameters:
+--out
+(
+string
+) - Specifies the path to the directory where the config is written. If not provided, defaults to the current process working directory.
+--format
+(
+string
+) (choices:
+modelgen
+,
+graphql-codegen
+,
+introspection
+) - Specifies the format of the GraphQL client code to be generated.
+--model-target
+(
+string
+) (choices:
+java
+,
+swift
+,
+javascript
+,
+typescript
+,
+dart
+) - Specifies the modelgen export target. Only applies when the --format parameter is set to modelgen.
+--statement-target
+(
+string
+) (choices:
+javascript
+,
+graphql
+,
+flow
+,
+typescript
+,
+angular
+) - Specifies the graphql-codegen statement export target. Only applies when the --format parameter is set to graphql-codegen.
+--statement-max-depth
+(
+integer
+) - Specifies the maximum depth of the generated GraphQL statements. Only applies when the --format parameter is set to graphql-codegen.
+--type-target
+(
+string
+) (choices:
+json
+,
+swift
+,
+typescript
+,
+flow
+,
+scala
+,
+flow-modern
+,
+angular
+) - Specifies the optional graphql-codegen type export target. Only applies when the --format parameter is set to graphql-codegen.
+--all
+(
+boolean
+)- Shows hidden options.
+--profile
+(
+string
+) - Specifies an AWS profile name.
+--debug
+(
+boolean
+) - Print debug logs to the console.
+--help
+(
+boolean
+) - Displays help information about the command.
+Generate GraphQL client code using the Amplify App ID and branch.
+Generate GraphQL client code for a branch that is connected to Amplify
+Sometimes you want to test your latest local changes with the backend of another deployed branch. If you want to generate the GraphQL client code file(s) for the latest deployment of another branch, you can run the following command:
+Generate codegen for CDK app using a joint "AmplifyBackendStack" construct
+Assume you have deployed your Amplify project with the CDK construct. You will need to remember your app's project name (designated as the second parameter in your CDK construct) and stack name (designated as part of your
+npx cdk deploy
+context)
+Deployment command for CDK project
+Run Amplify codegen command to generate GraphQL codegen:
+Generate codegen in specific language and format
+Supported GraphQL client code combinations:
+Generates typescript data schema from a SQL database.
+--stack
+(
+string
+) - A stack name that contains an Amplify backend.
+--branch
+(
+string
+) - Name of the git branch being deployed.
+--app-id
+(
+string
+) - The app id of the target Amplify app.
+--out
+(
+string
+) - A path to directory where generated schema is written [default:
+./amplify/data/schema.sql.ts
+].
+--connection-uri-secret
+(
+string
+) - Amplify secret name for the database connection uri.
+--ssl-cert-secret
+(
+string
+) - Amplify secret name for the database ssl certificate.
+--profile
+(
+string
+) - An AWS profile name.
+Generate React form components derived from your backend data models for your frontend application to consume.
+--stack
+(
+string
+) - A stack name that contains an Amplify backend.
+--branch
+(
+string
+) - Name of the git branch being deployed.
+--app-id
+(
+string
+) - The app id of the target Amplify app.
+--out-dir
+(
+string
+) - A path to directory where generated forms are written. Defaults to the
+./ui-components
+directory.
+--models
+(
+array
+) - Model name to generate.
+--profile
+(
+string
+) - An AWS profile name.
+Generates information on system, binaries, npm packages, and environment variables for troubleshooting Amplify issues.
+This command will print system information as follows:
+Deploys the Amplify project in a CI/CD pipeline for a specified Amplify app and branch.
+--branch
+(
+string
+) - Name of the git branch being deployed.
+--app-id
+(
+string
+) - The app id of the target Amplify app.
+--outputs-out-dir
+(
+string
+) - A path to a directory where the client config file is written. If not provided, defaults to the working directory of the current process.
+--outputs-version
+(
+string
+) - Version of the configuration. Version 0 represents classic amplify-cli config file amplify-configuration and 1 represents newer config file amplify_outputs (choices:
+0
+,
+1
+).

@@ -1,0 +1,36 @@
+Grant access to other resources
+In order for Amplify Functions to interact with other resources they must be given access. There are two ways to grant Amplify Functions access to other resources:
+Using the
+access
+property
+Using the AWS Cloud Development Kit (CDK)
+The
+access
+property is a property found in each of the
+define*
+functions for defining Amplify resources. It allows you specify the necessary actions using common language.
+When you grant a function access to another resource in your Amplify backend (
+such as granting access to storage
+), it will configure environment variables for that function to make SDK calls to the AWS services it has access to. Those environment variables are typed and available as part of the
+env
+object.
+Say you have a function that generates reports each month from your Data resource and needs to store the generated reports in Storage:
+This access definition will add the environment variable
+myReports_BUCKET_NAME
+to the function. This environment variable can be accessed on the
+env
+object.
+Here's an example of how it can be used to upload some content to S3.
+When permissions are needed to access resources beyond the capabilities of the
+access
+property, you must use CDK.
+Functions are created with an
+execution role
+, which is an IAM role that contains policies that dictate what resources your Function can interact with when it executes. This role can be extended using the
+addToRolePolicy()
+method:
+However some constructs provide a
+grant*
+method to grant access to common policy actions. Revisiting the example above you can grant the same access with
+grantPublish
+:

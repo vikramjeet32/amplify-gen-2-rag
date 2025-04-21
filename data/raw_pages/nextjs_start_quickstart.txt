@@ -1,0 +1,6 @@
+Quickstart
+ð Welcome to AWS Amplify! In this quickstart guide, you will:
+Deploy a Next.js app
+Build and connect to a database with real-time data updates
+Configure authentication and authorization rules
+We have two Quickstart guides you can follow:

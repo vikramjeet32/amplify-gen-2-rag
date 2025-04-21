@@ -1,0 +1,22 @@
+Modify Amplify-generated Cognito resources with CDK
+Amplify Auth provides sensible defaults for the underlying Amazon Cognito resource definitions. You can customize your authentication resource to enable it to behave exactly as needed for your use cases by modifying it directly using
+AWS Cloud Development Kit (CDK)
+You can override the password policy by using the L1
+cfnUserPool
+construct and adding a
+addPropertyOverride
+.
+While Email MFA is not yet supported with
+defineAuth
+, this feature can be enabled by modifying the underlying CDK construct.
+Start by ensuring your
+defineAuth
+resource configuration includes a compatible account recovery option and a custom SES sender.
+Next, extend the underlying CDK construct by activating
+Amazon Cognito's Advanced Security Features (ASF)
+and add
+EMAIL_OTP
+to the enabled MFA options.
+You can modify the underlying Cognito user pool resource to enable sign in with passwordless methods.
+Learn more about passwordless sign-in methods
+.

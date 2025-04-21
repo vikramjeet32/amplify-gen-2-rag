@@ -1,0 +1,39 @@
+Set up Amplify REST API
+Using the
+AWS Cloud Development Kit (AWS CDK)
+, you can configure Amplify Functions as resolvers for routes of a
+REST API powered by Amazon API Gateway
+.
+Create a new directory and a resource file,
+amplify/functions/api-function/resource.ts
+. Then, define the function with
+defineFunction
+:
+Create the corresponding handler file,
+amplify/functions/api-function/handler.ts
+, file with the following contents:
+Use the
+AWS CDK
+to create an REST API resource powered by
+Amazon API Gateway
+.
+Use the package manager of your choice to install the Amplify JavaScript library. For example, with
+npm
+:
+To initialize the Amplify API category you need to configure Amplify with
+Amplify.configure()
+.
+Import and load the configuration file in your app. It's recommended you add the Amplify configuration step to your app's root entry point. For example
+index.js
+in React or
+main.ts
+in Angular.
+Make sure you call
+Amplify.configure
+as early as possible in your applicationâs life-cycle. A missing configuration or
+NoCredentials
+error is thrown if
+Amplify.configure
+has not been called before other Amplify JavaScript APIs. Review the
+Library Not Configured Troubleshooting guide
+for possible causes of this issue.

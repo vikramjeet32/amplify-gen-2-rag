@@ -1,0 +1,51 @@
+Delete data
+To delete an item via the API endpoint:
+import
+{
+del
+}
+from
+'aws-amplify/api'
+;
+async
+function
+deleteItem
+(
+)
+{
+const
+restOperation
+=
+del
+(
+{
+await
+restOperation
+.
+response
+;
+console
+.
+log
+(
+'DELETE call succeeded'
+)
+;
+console
+.
+log
+(
+'DELETE call failed: '
+,
+JSON
+.
+parse
+(
+e
+.
+response
+.
+body
+)
+)
+;

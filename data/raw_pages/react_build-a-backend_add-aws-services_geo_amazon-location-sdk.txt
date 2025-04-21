@@ -1,0 +1,31 @@
+Use Amazon Location Service SDK
+Amplify Geo provides solutions for common use cases with
+Amazon Location Service
+but for any functionality that is not currently supported by Amplify Geo you can access the
+Amazon Location Service SDK
+directly.
+Follow this guide to get started with the
+aws-sdk
+for Amazon Location Service using Amplify Auth credentials.
+In this tutorial, weâll go over the following:
+Setting up the AWS SDK JavaScript v3 package for the Amazon Location Service SDK calls with Amplify auth.
+Code examples using the Amazon Location Service SDK.
+The first step to using the SDKs in the client is to install the necessary dependencies with the following command:
+In the following procedure, youâll connect your app to the Amazon Location Service APIs.
+To connect your app to the Amazon Location Service
+In your React App, open
+src/App.js
+file, and call the following function to initialize the Amazon Location Service client:
+Youâve now successfully connected your app to the Amazon Location Service.
+In order to access Amazon Location Service APIs, ensure you've provisioned resources and configured your app using the instructions in either
+Amplify Geo Maps docs
+or the
+Amazon Location Service console
+.
+You can check out the
+Amazon Location API Reference documentation
+for a complete list of supported features.
+This example requires you to have first provisioned a Tracker resource using the
+Amazon Location Service console
+.
+The following code details how to use the Amazon Location Service APIs to update a device position and get a device position using the tracker you just created:

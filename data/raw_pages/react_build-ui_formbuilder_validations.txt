@@ -1,0 +1,37 @@
+Validate form data
+Sanitize user input by adding validation rules to your form. By default, Amplify generated forms infers a range of validation rules based on the data model. For example, given a data model with an
+AWSEmail
+field, the generated form input will automatically run an email validation rule.
+By default, the following validation rules are available for you to configure:
+For the types below, we automatically apply validation rules on form inputs:
+AWSIPAddress
+: input value must be a valid IPv4 or IPv6 address.
+AWSURL
+: input value must consist of a schema (
+http
+,
+mailto
+) and a path part. Path part can't contain two forward slashes (//).
+AWSEmail
+: input value must be an email address in the format
+<local-part>@<domain-part>
+.
+AWSJSON
+: input value must be a valid JSON.
+AWSPhone
+: input value must be a phone number that can contain either spaces or hyphens to separate digit groups.
+Every form provides an
+onValidate
+event handler to provide additional validation rules via code. Return an object with validation functions for the fields you want to validate. In the example below,
+address
+must start with a number, otherwise return any existing auto-generated validation responses.
+Note:
+the validation function must return a validation response of the following shape:
+Amplify generated forms can also produce nested JSON object. For example, you can create a new
+ProductForm
+component based on the following JSON object:
+To add validation rules to the nested objects, pass in validation functions in the same nested structure as the data:
+Sometimes your form needs to asynchronously validate an input with an external API or database before the form data is submitted.
+Return a Promise in the
+onValidate
+prop to run an asynchronous validation rule. In the following example, we check with an external API if a real estate agent exist based on a given license number:

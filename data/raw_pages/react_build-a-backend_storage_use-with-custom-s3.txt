@@ -1,0 +1,87 @@
+Use Amplify Storage with any S3 bucket
+With Amplify Storage APIs, you can use your own S3 buckets instead of the Amplify-created ones.
+Important:
+To utilize the storage APIs with an S3 bucket outside of Amplify, you must have Amplify Auth configured in your project.
+For the specific Amazon S3 bucket that you want to use with these APIs, you need to make sure that the associated IAM role has the necessary permissions to read and write data to that bucket.
+To do this, go to
+Amazon S3 console
+>
+Select the S3 bucket
+>
+Permissions
+>
+Edit
+Bucket Policy.
+The policy will look something like this:
+Replace
+<AWS-account-ID>
+with your AWS account ID and
+<role-name>
+with the IAM role associated with your Amplify Auth setup. Replace
+<bucket-name>
+with the S3 bucket name.
+You can refer to
+Amazon S3's Policies and Permissions documentation
+for more ways to customize access to the bucket.
+In order to make calls to your manually configured S3 bucket from your application, you must also set up a
+CORS Policy
+for the bucket.
+Next, use the
+addOutput
+method from the backend definition object to define a custom S3 bucket by specifying the name and region of the bucket in your
+amplify/backend.ts
+file. You must also set up the appropriate resources and IAM policies to be attached to the backend.
+Important:
+You can use a storage backend configured through Amplify and a custom S3 bucket at the same time using this method. However, the Amplify-configured storage will be used as the
+default bucket
+and the custom S3 bucket will only be used as an additional bucket.
+Configure the S3 bucket
+Below are several examples of configuring the backend to define a custom S3 bucket:
+Guest Users
+Authenticated Users
+User Groups
+Owners
+Below is an example of expanding the original backend object to grant all guest (i.e. not signed in) users read access to files under
+public/
+:
+Below is an example of expanding the original backend object to grant all authenticated (i.e. signed in) users with full access to files under
+public/
+:
+Below is an example of expanding the original backend object with user group permissions. Here, any authenticated users can read from
+admin/
+and
+public/
+and authenticated users belonging to the "admin" user group can only manage
+admin/
+:
+Amplify allows scoping file access to individual users via the user's identity ID. To specify the user's identity ID, you can use the token
+${cognito-identity.amazonaws.com:sub}
+.
+Below is an example of expanding the original backend object to define read access for guests to the
+public/
+folder, as well as defining a
+protected/
+folder where anyone can view uploaded files, but only the file owner can modify/delete them:
+The custom authorization rules defined in the examples can be combined, and follow the same rules as Amplify-defined storage. Please refer to our documentation on
+customizing authorization rules
+for more information.
+To ensure the local
+amplify_outputs.json
+file is up-to-date, you can run
+the
+npx ampx generate outputs
+command
+or download the latest
+amplify_outputs.json
+from the Amplify console as shown below.
+Now that you've configured the necessary permissions, you can start using the storage APIs with your chosen S3 bucket.
+While using the Amplify backend is the easiest way to get started, existing storage resources can also be integrated with Amplify Storage.
+In addition to manually configuring your storage options, you will also need to ensure Amplify Auth is properly configured in your project and associated IAM roles have the necessary permissions to interact with your existing bucket. Read more about
+using existing auth resources without an Amplify backend
+.
+Existing storage resource setup can be accomplished by passing the resource metadata to
+Amplify.configure
+. This will configure the Amplify Storage client library to interact with the additional resources. It's recommended to add the Amplify configuration step as early as possible in the application lifecycle, ideally at the root entry point.
+Alternatively, existing storage resources can be used by creating or modifying the
+amplify_outputs.json
+file directly.

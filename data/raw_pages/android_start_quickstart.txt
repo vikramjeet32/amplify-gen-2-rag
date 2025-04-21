@@ -1,0 +1,142 @@
+Quickstart
+ð Welcome to AWS Amplify! In this quickstart guide, you will:
+deploy an Amplify backend database and authentication
+connect to the backend from an Android app
+make backend updates
+To get started faster, we've created a starter "To-do" Amplify backend. First, create a repository in your GitHub account using our starter template.
+Use our starter template to create a repository in your GitHub account. This template scaffolds an Amplify Backend with Auth and Data capabilities.
+Create repository from template
+Now that the repository has been created, deploy this to Amplify's CI/CD pipeline.
+Deploy to AWS
+Select
+GitHub
+, pick the starter repository, and hit "Save and Deploy".
+While you are waiting for your app to deploy (~5 mins)
+Learn about the project structure
+Let's take a tour of the project structure in this starter repository. The starter application already has pre-written code to give you a real-time database with a feed of all to-do items and the ability to add new items.
+Close accordion
+When the build completes, visit the newly deployed branch by selecting the branch name and then looking at the
+Deployed backend resources
+section under deployments.
+Let's learn how to enhance the app functionality by creating a delete flow for to-do list items.
+If you do not have an existing Android app.
+Setup Android project
+Open Android Studio.
+Select
++ Create New Project.
+In
+Select a Project Template
+, select
+Empty Activity
+or
+Empty Compose Activity
+. Press
+Next
+.
+Enter
+MyAmplifyApp
+in the
+Name
+field
+Select either
+Java
+or
+Kotlin
+from the
+Language
+dropdown menu
+Select
+API 24: Android 7.0 (Nougat)
+from the
+Minimum SDK
+dropdown menu
+Press
+Finish
+Close accordion
+On the
+Deployed backend resources
+, choose
+Download outputs file
+to download the
+amplify_outputs.json
+file that contains identifiers for all the deployed backend resources.
+Now move the
+amplify_outputs.json
+file you downloaded above to
+app/src/main/res/raw
+in your Android project. You will now be able to connect to this backend.
+The
+amplify_outputs.json
+file contains backend endpoint information, publicly-viewable API keys, authentication flow information, and more. The Amplify client library uses this outputs file to connect to your Amplify Backend.
+Close accordion
+Amplify uses some modern Java APIs that require desugaring to be added for earlier versions of Android. In your app/build.gradle.kts add the following lines:
+The deployed backend application already has a pre-configured auth backend defined in the
+amplify/auth/resource.ts
+file.
+The fastest way to get your login experience up and running is to use our Authenticator UI component. To use the Authenticator UI component, you need to add the following dependencies to your app/build.gradle.kts file:
+Be sure to have compileSdk version as 34 or higher.
+Afterwards create a
+MyAmplifyApp
+class that extends
+Application
+and add the following code:
+Next call this class in your
+AndroidManifest.xml
+file:
+Update
+MainActivity.kt
+to use the Android Authenticator component.
+Now if you run the application on the Android emulator, you should see the authentication flow working.
+The initial scaffolding already has a pre-configured data backend defined in the
+amplify/data/resource.ts
+file. The default example will create a Todo model with
+content
+field.
+Amplify can automatically generate code for interacting with the backend API. The command below generates model classes from the Data schema:
+Find your App ID in the Amplify Console
+Looking for your App ID?
+In the command below, replace the APP-ID with your Amplify app ID. Find this in the Amplify Console.
+Close accordion
+Once you are done, add the following dependencies to your project:
+After adding the dependencies, open the
+MyAmplifyApp
+class and add the following line before the
+configure
+call:
+Update the
+MainActivity
+class with the following code to create new to-do items. The
+onClick
+function will create a new Todo item.
+Now it is time to add a logic to view the added items.
+Now call
+TodoList()
+from the
+onCreate()
+function:
+If you build and rerun the application, you should see the todo that was created in the previous build. But notice how when you click on the "create Todo" button, it doesn't add any new todos to the list below until the next time your app relaunches. To solve this, let's add real-time updates to the todo list.
+To add real-time updates, you can use the subscription feature of Amplify Data. It allows to subscribe to
+onCreate
+,
+onUpdate
+, and
+onDelete
+events of the application. In our example, let's append the list every time a new todo is added.
+Let's update our backend to implement per-user authorization rules, allowing each user to only access their own to-dos.
+First, clone the deployed repository.
+The backend to-do model is configured to share data across all users, but, in most cases, you want data to be isolated on a per-user basis.
+To isolate the data on a per-user basis, you can use an "owner-based authorization rule". Let's apply the owner-based authorization rule to your to-do items:
+Commit this change to your git repository. Amplify's CI/CD system will automatically pick up the changes and build and deploy the updates.
+Now, let's go back to your Android application and test out the user isolation of the to-do items. Fetch the latest
+amplify_outputs.json
+and model files by re-running the following command in your Android Studio terminal.
+Find your App ID in the Amplify Console
+Looking for your App ID?
+In the command below, replace the APP-ID with your Amplify app ID. Find this in the Amplify Console.
+Close accordion
+Also update your
+amplify_outputs
+file with the latest outputs information.
+That's it! You have successfully built a fullstack app on AWS Amplify. If you want to learn more about how to work with Amplify, here's the conceptual guide for
+how Amplify works
+.

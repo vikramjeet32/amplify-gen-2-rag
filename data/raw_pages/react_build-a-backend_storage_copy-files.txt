@@ -1,0 +1,26 @@
+Copy files
+Note:
+You can only copy files up to 5GB in a single operation
+You can copy an existing file to a different path within the storage bucket using the copy API.
+The
+copy
+method duplicates an existing file to a designated path and returns an object
+{path: 'destPath'}
+upon successful completion.
+The operation can fail if there's a special character in the
+source
+path. You should URI encode the source
+path with special character. You
+don't
+need to encode the
+destination
+path.
+Cross identity ID copying is only allowed if the destination path has the the right access rules to allow other authenticated users writing to it.
+You can also perform an
+copy
+operation to a specific bucket by providing the
+bucket
+option. This option can either be a string representing the target bucket's assigned name in Amplify Backend or an object specifying the bucket name and region from the console.
+In order to copy to or from a bucket other than your default, both source and destination must have
+bucket
+explicitly defined.

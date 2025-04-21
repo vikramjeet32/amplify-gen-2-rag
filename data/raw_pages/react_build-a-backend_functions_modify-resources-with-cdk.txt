@@ -1,0 +1,49 @@
+Modify Amplify-generated Lambda resources with CDK
+Amplify Functions utilize the
+NodejsFunction
+construct from the
+AWS Cloud Development Kit (CDK)
+. The underlying resources can be modified, overridden, or extended using CDK after setting the resource on your backend.
+amplify/backend.ts
+Copy
+amplify/backend.ts code example
+import
+{
+defineBackend
+}
+from
+'@aws-amplify/backend'
+;
+import
+{
+myFunction
+}
+from
+'./functions/my-function'
+;
+const
+backend
+=
+defineBackend
+(
+{
+// CDK constructs can be accessed via
+backend
+.
+myFunction
+.
+resources
+// where the Lambda function can be found on
+backend
+.
+myFunction
+.
+resources
+.
+lambda
+The Lambda resource available is a representation of
+IFunction
+.
+To learn how to add IAM policies to a Function's execution role, visit the
+documentation for granting access to other resources
+.

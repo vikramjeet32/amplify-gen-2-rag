@@ -1,0 +1,9 @@
+Translate language
+Note:
+Make sure to complete the
+getting started
+section first, where you will set up the IAM roles with the right policy actions
+Translate text from one source language to a destination language.
+To view the complete list of supported languages refer to
+Supported languages and language codes
+.

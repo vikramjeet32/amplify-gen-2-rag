@@ -1,0 +1,9 @@
+Transcribe audio to text
+Note:
+Make sure to complete the
+getting started
+section first, where you will set up the IAM roles with the right policy actions
+You can transcribe a PCM Audio byte buffer to Text, such as a recording from microphone.
+To view the complete list of all the supported languages and language specific features refer to
+the supported languages list
+. The language data input type has to support streaming for it to work with Amplify Predictions.

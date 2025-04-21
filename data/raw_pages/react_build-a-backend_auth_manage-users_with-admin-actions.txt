@@ -1,0 +1,26 @@
+With admin actions
+Amplify Auth can be managed with the
+AWS SDK's
+@aws-sdk/client-cognito-identity-provider
+package
+. This package is intended to use server-side, and can be used within a Function. This example focuses on the
+addUserToGroup
+action and will be defined as a
+custom mutation
+.
+To get started, create an "ADMINS" group that will be used to authorize the mutation:
+Next, create the Function resource:
+Then, in your auth resources, grant access for the function to perform the
+addUserToGroup
+action.
+Learn more about granting access to auth resources
+.
+You're now ready to define the custom mutation. Here you will use the newly-created
+addUserToGroup
+function resource to handle the
+addUserToGroup
+mutation. This mutation can only be called by a user in the "ADMINS" group.
+Lastly, create the function's handler using the exported client schema to type the handler function, and the generated
+env
+to specify the user pool ID you'd like to interact with:
+In your frontend, use the generated client to call your mutation using the group name and the user's ID.
